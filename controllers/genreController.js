@@ -5,7 +5,7 @@ var async = require('async')
 
 // Display list of all Genre
 exports.genre_list = function(req, res, next) {
-    
+
   Genre.find()
     .sort([['name', 'ascending']])
     .exec(function (err, list_genres) {
@@ -13,19 +13,19 @@ exports.genre_list = function(req, res, next) {
       //Successful, so render
       res.render('genre_list', { title: 'Genre List', list_genres:  list_genres});
     })
-    
+
 };
 
 // Display detail page for a specific Genre
 exports.genre_detail = function(req, res, next) {
 
     async.parallel({
-        genre: function(callback) {     
-              
+        genre: function(callback) {
+
             Genre.findById(req.params.id)
-              .exec(callback) 
+              .exec(callback)
         },
-        
+
         genre_books: function(callback) {
           Book.find({ 'genre': req.params.id })
           .exec(callback)
@@ -34,40 +34,41 @@ exports.genre_detail = function(req, res, next) {
     }, function(err, results) {
         if (err) { return next(err); }
         //Successful, so render
- 
+
         res.render('genre_detail', { title: 'Genre Detail', genre: results.genre, genre_books: results.genre_books } );
     });
 
 };
 
 // Display Genre create form on GET
-exports.genre_create_get = function(req, res, next) {       
+exports.genre_create_get = function(req, res, next) {
     res.render('genre_form', { title: 'Create Genre'});
 };
 
-// Handle Genre create on POST 
+// Handle Genre create on POST
 exports.genre_create_post = function(req, res, next) {
-    
+
     //Check that the name field is not empty
-    req.checkBody('name', 'Genre name required').notEmpty(); 
-    
-    //Trim and escape the name field. 
-    req.sanitize('name').escape().trim();
-    
+    req.checkBody('name', 'Genre name required').notEmpty();
+
+    //Trim and escape the name field.
+    req.sanitize('name').escape();
+    req.sanitize('name').trim();
+
     //Run the validators
     var errors = req.validationErrors();
-    
+
     //Create a genre object with escaped and trimmed data.
     var genre = new Genre(
       { name: req.body.name }
     );
-    
-    
+
+
     if (errors) {
         //If there are errors render the form again, passing the previously entered values and errors
         res.render('genre_form', { title: 'Create Genre', genre: genre, errors: errors});
     return;
-    } 
+    }
     else {
         // Data from form is valid.
         //Check if Genre with same name already exists
@@ -75,21 +76,21 @@ exports.genre_create_post = function(req, res, next) {
             .exec( function(err, found_genre) {
                  console.log('found_genre: '+found_genre)
                  if (err) { return next(err); }
-                 
-                 if (found_genre) { 
+
+                 if (found_genre) {
                      //Genre exists, redirect to its detail page
                      res.redirect(found_genre.url);
                  }
                  else {
-                     
+
                      genre.save(function (err) {
                        if (err) { return next(err); }
                        //Genre saved. Redirect to genre detail page
                        res.redirect(genre.url);
                      });
-                     
+
                  }
-                 
+
              });
     }
 
@@ -99,8 +100,8 @@ exports.genre_create_post = function(req, res, next) {
 exports.genre_delete_get = function(req, res, next) {
 
     async.parallel({
-        genre: function(callback) {     
-            Genre.findById(req.params.id).exec(callback) 
+        genre: function(callback) {
+            Genre.findById(req.params.id).exec(callback)
         },
         genre_books: function(callback) {
             Book.find({ 'genre': req.params.id }).exec(callback)
@@ -113,14 +114,14 @@ exports.genre_delete_get = function(req, res, next) {
 
 };
 
-// Handle Genre delete on POST 
+// Handle Genre delete on POST
 exports.genre_delete_post = function(req, res, next) {
 
-    req.checkBody('id', 'Genre id must exist').notEmpty();  
-    
+    req.checkBody('id', 'Genre id must exist').notEmpty();
+
     async.parallel({
-        genre: function(callback) {     
-            Genre.findById(req.params.id).exec(callback) 
+        genre: function(callback) {
+            Genre.findById(req.params.id).exec(callback)
         },
         genre_books: function(callback) {
             Book.find({ 'genre': req.params.id }).exec(callback)
@@ -149,7 +150,8 @@ exports.genre_delete_post = function(req, res, next) {
 // Display Genre update form on GET
 exports.genre_update_get = function(req, res, next) {
 
-    req.sanitize('id').escape().trim();
+    req.sanitize('id').escape();
+    req.sanitize('id').trim();
     Genre.findById(req.params.id, function(err, genre) {
         if (err) { return next(err); }
         //On success
@@ -158,31 +160,33 @@ exports.genre_update_get = function(req, res, next) {
 
 };
 
-// Handle Genre update on POST 
+// Handle Genre update on POST
 exports.genre_update_post = function(req, res, next) {
 
-    req.sanitize('id').escape().trim();
+    req.sanitize('id').escape();
+    req.sanitize('id').trim();
     //Check that the name field is not empty
     req.checkBody('name', 'Genre name required').notEmpty();
-    //Trim and escape the name field. 
-    req.sanitize('name').escape().trim();
-    
+    //Trim and escape the name field.
+    req.sanitize('name').escape();
+    req.sanitize('name').trim();
+
     //Run the validators
     var errors = req.validationErrors();
-    
+
     //Create a genre object with escaped and trimmed data (and the old id!)
     var genre = new Genre(
-      { 
+      {
       name: req.body.name,
       _id: req.params.id
       }
     );
-    
+
     if (errors) {
         //If there are errors render the form again, passing the previously entered values and errors
         res.render('genre_form', { title: 'Update Genre', genre: genre, errors: errors});
     return;
-    } 
+    }
     else {
         // Data from form is valid. Update the record.
         Genre.findByIdAndUpdate(req.params.id, genre, {}, function (err,thegenre) {
@@ -191,5 +195,5 @@ exports.genre_update_post = function(req, res, next) {
                res.redirect(thegenre.url);
             });
     }
-    
+
 };
