@@ -1,27 +1,27 @@
-var Book = require('../models/book')
-var Author = require('../models/author')
-var Genre = require('../models/genre')
-var BookInstance = require('../models/bookinstance')
+var Book = require('../models/book');
+var Author = require('../models/author');
+var Genre = require('../models/genre');
+var BookInstance = require('../models/bookinstance');
 
-var async = require('async')
+var async = require('async');
 
 exports.index = function(req, res) {
 
     async.parallel({
         book_count: function(callback) {
-            Book.count(callback)
+            Book.count(callback);
         },
         book_instance_count: function(callback) {
-            BookInstance.count(callback)
+            BookInstance.count(callback);
         },
         book_instance_available_count: function(callback) {
-            BookInstance.count({status:'Available'},callback)
+            BookInstance.count({status:'Available'},callback);
         },
         author_count: function(callback) {
-            Author.count(callback)
+            Author.count(callback);
         },
         genre_count: function(callback) {
-            Genre.count(callback)
+            Genre.count(callback);
         },
     }, function(err, results) {
         res.render('index', { title: 'Local Library Home', error: err, data: results });
@@ -38,7 +38,7 @@ exports.book_list = function(req, res, next) {
       if (err) { return next(err); }
       //Successful, so render
       res.render('book_list', { title: 'Book List', book_list:  list_books});
-    })
+    });
 
 };
 
@@ -51,13 +51,13 @@ exports.book_detail = function(req, res, next) {
             Book.findById(req.params.id)
               .populate('author')
               .populate('genre')
-              .exec(callback)
+              .exec(callback);
         },
         book_instance: function(callback) {
 
           BookInstance.find({ 'book': req.params.id })
           //.populate('book')
-          .exec(callback)
+          .exec(callback);
         },
     }, function(err, results) {
         if (err) { return next(err); }
@@ -73,10 +73,10 @@ exports.book_create_get = function(req, res, next) {
     //Get all authors and genres, which we can use for adding to our book.
     async.parallel({
         authors: function(callback) {
-            Author.find(callback)
+            Author.find(callback);
         },
         genres: function(callback) {
-            Genre.find(callback)
+            Genre.find(callback);
         },
     }, function(err, results) {
         if (err) { return next(err); }
@@ -122,10 +122,10 @@ exports.book_create_post = function(req, res, next) {
         //Get all authors and genres for form
         async.parallel({
             authors: function(callback) {
-                Author.find(callback)
+                Author.find(callback);
             },
             genres: function(callback) {
-                Genre.find(callback)
+                Genre.find(callback);
             },
         }, function(err, results) {
             if (err) { return next(err); }
@@ -161,10 +161,10 @@ exports.book_delete_get = function(req, res, next) {
 
     async.parallel({
         book: function(callback) {
-            Book.findById(req.params.id).populate('author').populate('genre').exec(callback)
+            Book.findById(req.params.id).populate('author').populate('genre').exec(callback);
         },
         book_bookinstances: function(callback) {
-            BookInstance.find({ 'book': req.params.id }).exec(callback)
+            BookInstance.find({ 'book': req.params.id }).exec(callback);
         },
     }, function(err, results) {
         if (err) { return next(err); }
@@ -181,15 +181,15 @@ exports.book_delete_post = function(req, res, next) {
 
     async.parallel({
         book: function(callback) {
-            Book.findById(req.params.id).populate('author').populate('genre').exec(callback)
+            Book.findById(req.params.id).populate('author').populate('genre').exec(callback);
         },
         book_bookinstances: function(callback) {
-            BookInstance.find({ 'book': req.params.id }).exec(callback)
+            BookInstance.find({ 'book': req.params.id }).exec(callback);
         },
     }, function(err, results) {
         if (err) { return next(err); }
         //Success
-        if (results.book_bookinstances>0) {
+        if (results.book_bookinstances.length > 0) {
             //Book has book_instances. Render in same way as for GET route.
             res.render('book_delete', { title: 'Delete Book', book: results.book, book_instances: results.book_bookinstances } );
             return;
@@ -199,8 +199,8 @@ exports.book_delete_post = function(req, res, next) {
             Book.findByIdAndRemove(req.body.id, function deleteBook(err) {
                 if (err) { return next(err); }
                 //Success - got to books list
-                res.redirect('/catalog/books')
-            })
+                res.redirect('/catalog/books');
+            });
 
         }
     });
@@ -216,13 +216,13 @@ exports.book_update_get = function(req, res, next) {
     //Get book, authors and genres for form
     async.parallel({
         book: function(callback) {
-            Book.findById(req.params.id).populate('author').populate('genre').exec(callback)
+            Book.findById(req.params.id).populate('author').populate('genre').exec(callback);
         },
         authors: function(callback) {
-            Author.find(callback)
+            Author.find(callback);
         },
         genres: function(callback) {
-            Genre.find(callback)
+            Genre.find(callback);
         },
         }, function(err, results) {
             if (err) { return next(err); }
@@ -278,10 +278,10 @@ exports.book_update_post = function(req, res, next) {
         // Get all authors and genres for form
         async.parallel({
             authors: function(callback) {
-                Author.find(callback)
+                Author.find(callback);
             },
             genres: function(callback) {
-                Genre.find(callback)
+                Genre.find(callback);
             },
         }, function(err, results) {
             if (err) { return next(err); }
