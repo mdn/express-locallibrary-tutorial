@@ -8,7 +8,7 @@ block content
       label(for='book') Book:
       select#book.form-control(type='select', placeholder='Select book' name='book' required='true' )
         for book in book_list
-          option(value=book._id, selected=(selected_book==book._id ? 'selected' : false) ) #{book.title}
+          option(value=book._id, selected=(selected_book==book._id.toString() ? 'selected' : false) ) #{book.title}
         
     div.form-group
       label(for='imprint') Imprint:
