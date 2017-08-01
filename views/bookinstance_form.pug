@@ -8,7 +8,7 @@ block content
       label(for='book') Book:
       select#book.form-control(type='select', placeholder='Select book' name='book' required='true' )
         for book in book_list
-          option(value=book._id, selected=(selected_book==book._id ? 'selected' : false) ) #{book.title}
+          option(value=book._id, selected=(selected_book==book._id.toString() ? 'selected' : false) ) #{book.title}
         
     div.form-group
       label(for='imprint') Imprint:
@@ -20,10 +20,10 @@ block content
     div.form-group
       label(for='status') Status:
       select#status.form-control(type='select', placeholder='Select status' name='status' required='true' )
-        option(value='Maintenance') Maintenance
-        option(value='Available') Available
-        option(value='Loaned') Loaned
-        option(value='Reserved') Reserved
+        option(value='Maintenance' selected=(undefined===bookinstance || bookinstance.status!='Maintenance' ? false:'selected')) Maintenance
+        option(value='Available' selected=(undefined===bookinstance || bookinstance.status!='Available' ? false:'selected')) Available
+        option(value='Loaned' selected=(undefined===bookinstance || bookinstance.status!='Loaned' ? false:'selected')) Loaned
+        option(value='Reserved' selected=(undefined===bookinstance || bookinstance.status!='Reserved' ? false:'selected')) Reserved
 
     button.btn.btn-primary(type='submit') Submit
 
