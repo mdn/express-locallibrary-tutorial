@@ -3,14 +3,14 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var GenreSchema = Schema({
-    name: {type: String, required: true}
+    name: {type: String, required: true, min: 3, max: 100}
 });
 
 // Virtual for this genre instance URL
 GenreSchema
 .virtual('url')
 .get(function () {
-  return '/catalog/genre/'+this._id
+  return '/catalog/genre/'+this._id;
 });
 
 //Export model
