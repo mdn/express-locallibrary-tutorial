@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-console.log('This script populates a some test books, authors, genres and bookinstances to your database. Specified database as argument - e.g.: populatedb mongodb://your_username:your_password@your_dabase_url');
+console.log('This script populates some test books, authors, genres and bookinstances to your database. Specified database as argument - e.g.: populatedb mongodb://your_username:your_password@your_dabase_url');
 
 //Get arguments passed on command line
 var userArgs = process.argv.slice(2);
