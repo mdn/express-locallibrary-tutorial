@@ -5,12 +5,6 @@ Tutorial "Local Library" website written in in Node/Express.
 
 This web application creates an online catalog for a small local library, where users can browse available books and manage their accounts.
 
-The main features that have currently been implemented are:
-
-* None
-
-
-
 ![](https://github.com/hamishwillee/express-locallibrary-tutorial/blob/master/public/images/Library%20Website%20-%20Mongoose_Express.png)
 
 
