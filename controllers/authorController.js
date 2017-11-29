@@ -46,7 +46,7 @@ exports.author_create_post = function(req, res, next) {
 
     req.checkBody('first_name', 'First name must be specified.').notEmpty(); //We won't force Alphanumeric, because people might have spaces.
     req.checkBody('family_name', 'Family name must be specified.').notEmpty();
-    req.checkBody('family_name', 'Family name must be alphanumeric text.').isAlpha();
+    req.checkBody('family_name', 'Family name must be alphanumeric text.').isAlphanumeric();
 
     req.sanitize('first_name').escape();
     req.sanitize('family_name').escape();
