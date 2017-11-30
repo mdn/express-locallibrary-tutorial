@@ -50,13 +50,14 @@ exports.author_create_post = function(req, res, next) {
     req.checkBody('date_of_birth', 'Invalid date').optional({ checkFalsy: true }).isISO8601();
     req.checkBody('date_of_death', 'Invalid date').optional({ checkFalsy: true }).isISO8601();
   
-    //Run the validators
-    var errors = req.validationErrors();
-
+    
     req.sanitize('first_name').escape();
     req.sanitize('family_name').escape();
     req.sanitize('first_name').trim();
     req.sanitize('family_name').trim();
+
+    //Run the validators because below code will modify the date value which will cause validation error
+    var errors = req.validationErrors(); 
     req.sanitize('date_of_birth').toDate();
     req.sanitize('date_of_death').toDate();
 
