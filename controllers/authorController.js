@@ -47,6 +47,11 @@ exports.author_create_post = function(req, res, next) {
     req.checkBody('first_name', 'First name must be specified.').notEmpty(); //We won't force Alphanumeric, because people might have spaces.
     req.checkBody('family_name', 'Family name must be specified.').notEmpty();
     req.checkBody('family_name', 'Family name must be alphanumeric text.').isAlphanumeric();
+    req.checkBody('date_of_birth', 'Invalid date').optional({ checkFalsy: true }).isISO8601();
+    req.checkBody('date_of_death', 'Invalid date').optional({ checkFalsy: true }).isISO8601();
+  
+    //Run the validators
+    var errors = req.validationErrors();
 
     req.sanitize('first_name').escape();
     req.sanitize('family_name').escape();
@@ -55,7 +60,6 @@ exports.author_create_post = function(req, res, next) {
     req.sanitize('date_of_birth').toDate();
     req.sanitize('date_of_death').toDate();
 
-    var errors = req.validationErrors();
 
     var author = new Author(
       { first_name: req.body.first_name,
