@@ -3,8 +3,6 @@ logs
 *.log
 npm-debug.log*
 
-# Lock files
-
 
 # Runtime data
 pids
