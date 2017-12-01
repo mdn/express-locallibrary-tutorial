@@ -45,7 +45,7 @@ exports.bookinstance_create_post = function(req, res, next) {
 
     req.checkBody('book', 'Book must be specified').notEmpty(); //We won't force Alphanumeric, because people might have spaces.
     req.checkBody('imprint', 'Imprint must be specified').notEmpty();
-    req.checkBody('due_back', 'Invalid date').optional({ checkFalsy: true }).isDate();
+    req.checkBody('due_back', 'Invalid date').optional({ checkFalsy: true }).isISO8601();
 
     req.sanitize('book').escape();
     req.sanitize('imprint').escape();
@@ -53,6 +53,9 @@ exports.bookinstance_create_post = function(req, res, next) {
     req.sanitize('book').trim();
     req.sanitize('imprint').trim();
     req.sanitize('status').trim();
+
+    //Run the validators because below code will modify the value of dates which will cause validation error
+    var errors = req.validationErrors();
     req.sanitize('due_back').toDate();
 
     var bookinstance = new BookInstance(
@@ -62,7 +65,6 @@ exports.bookinstance_create_post = function(req, res, next) {
         due_back: req.body.due_back
        });
 
-    var errors = req.validationErrors();
     if (errors) {
 
         Book.find({},'title')
