@@ -16,7 +16,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
-    "express-validator": "^3.0.0",
+    "express-validator": "^4.3.0",
     "helmet": "^3.1.0",
     "moment": "^2.19.3",
     "mongoose": "^4.13.5",
