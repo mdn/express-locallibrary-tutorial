@@ -3,7 +3,7 @@ var moment = require('moment'); //for date handling
 
 var Schema = mongoose.Schema;
 
-var AuthorSchema = Schema(
+var AuthorSchema = new Schema(
     {
     first_name: {type: String, required: true, max: 100},
     family_name: {type: String, required: true, max: 100},
