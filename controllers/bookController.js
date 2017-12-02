@@ -101,7 +101,16 @@ exports.book_create_post = function(req, res, next) {
     req.sanitize('author').trim();
     req.sanitize('summary').trim();
     req.sanitize('isbn').trim();
-    req.sanitize('genre').escape();
+     // Sanitize genre array for each value individually as validator works for string value only
+     if(req.body.genre instanceof Array){
+        req.body.genre = req.body.genre.map((initialGenre)=>{
+            req.body.tempGenre = initialGenre;
+            req.sanitize('tempGenre').escape();
+            return req.body.tempGenre;
+        });
+        delete req.body.tempGenre;
+        }else
+        req.sanitize('genre').escape();
 
     var book = new Book(
       { title: req.body.title,
@@ -261,14 +270,25 @@ exports.book_update_post = function(req, res, next) {
     req.sanitize('author').trim();
     req.sanitize('summary').trim();
     req.sanitize('isbn').trim();
+
+    // Sanitize genre array for each value individually as validator works for string value only
+    if(req.body.genre instanceof Array){
+    req.body.genre = req.body.genre.map((initialGenre)=>{
+        req.body.tempGenre = initialGenre;
+        req.sanitize('tempGenre').escape();
+        return req.body.tempGenre;
+    });
+    delete req.body.tempGenre;
+    }else
     req.sanitize('genre').escape();
+     
 
     var book = new Book(
       { title: req.body.title,
         author: req.body.author,
         summary: req.body.summary,
         isbn: req.body.isbn,
-        genre: (typeof req.body.genre==='undefined') ? [] : req.body.genre.split(","),
+        genre: req.body.genre,
         _id:req.params.id //This is required, or a new ID will be assigned!
        });
 
