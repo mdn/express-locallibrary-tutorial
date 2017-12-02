@@ -117,7 +117,7 @@ exports.book_create_post = function(req, res, next) {
         author: req.body.author,
         summary: req.body.summary,
         isbn: req.body.isbn,
-        genre: (typeof req.body.genre==='undefined') ? [] : req.body.genre.split(",")
+        genre: (typeof req.body.genre==='undefined') ? [] : req.body.genre
        });
 
     console.log('BOOK: '+book);
@@ -288,7 +288,7 @@ exports.book_update_post = function(req, res, next) {
         author: req.body.author,
         summary: req.body.summary,
         isbn: req.body.isbn,
-        genre: req.body.genre,
+        genre: (typeof req.body.genre==='undefined') ? [] : req.body.genre,
         _id:req.params.id //This is required, or a new ID will be assigned!
        });
 
