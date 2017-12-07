@@ -12,19 +12,19 @@
   "dependencies": {
     "async": "^2.6.0",
     "body-parser": "~1.18.2",
-    "compression": "^1.6.2",
+    "compression": "^1.7.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "express-validator": "^4.3.0",
-    "helmet": "^3.1.0",
+    "helmet": "^3.9.0",
     "moment": "^2.19.3",
-    "mongoose": "^4.13.5",
+    "mongoose": "^4.13.6",
     "morgan": "~1.9.0",
     "pug": "~2.0.0-beta11",
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.5"
   }
 }
