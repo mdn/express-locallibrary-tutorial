@@ -49,14 +49,12 @@ exports.author_create_post = function(req, res, next) {
     req.checkBody('family_name', 'Family name must be alphanumeric text.').isAlphanumeric();
     req.checkBody('date_of_birth', 'Invalid date').optional({ checkFalsy: true }).isISO8601();
     req.checkBody('date_of_death', 'Invalid date').optional({ checkFalsy: true }).isISO8601();
-  
-    
     req.sanitize('first_name').escape();
     req.sanitize('family_name').escape();
     req.sanitize('first_name').trim();
     req.sanitize('family_name').trim();
 
-    //Run the validators because below code will modify the date value which will cause validation error
+    //Run the validators (sanitizing date below causes validation error)
     var errors = req.validationErrors(); 
     req.sanitize('date_of_birth').toDate();
     req.sanitize('date_of_death').toDate();
@@ -159,17 +157,17 @@ exports.author_update_post = function(req, res, next) {
     req.checkBody('first_name', 'First name must be specified.').notEmpty();
     req.checkBody('family_name', 'Family name must be specified.').notEmpty();
     req.checkBody('family_name', 'Family name must be alphanumeric text.').isAlpha();
-    req.checkBody('date_of_birth', 'Invalid date').optional({ checkFalsy: true }).isDate();
-    req.checkBody('date_of_death', 'Invalid date').optional({ checkFalsy: true }).isDate();
+    req.checkBody('date_of_birth', 'Invalid date').optional({ checkFalsy: true }).isISO8601();
+    req.checkBody('date_of_death', 'Invalid date').optional({ checkFalsy: true }).isISO8601();
     req.sanitize('first_name').escape();
     req.sanitize('family_name').escape();
     req.sanitize('first_name').trim();
     req.sanitize('family_name').trim();
+
+    //Run the validators (sanitizing date below causes validation error)
+    var errors = req.validationErrors();
     req.sanitize('date_of_birth').toDate();
     req.sanitize('date_of_death').toDate();
-
-    //Run the validators
-    var errors = req.validationErrors();
 
     //Create a author object with escaped and trimmed data (and the old id!)
     var author = new Author(
