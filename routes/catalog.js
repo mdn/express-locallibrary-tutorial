@@ -7,6 +7,7 @@ var book_controller = require('../controllers/bookController');
 var author_controller = require('../controllers/authorController');
 var genre_controller = require('../controllers/genreController');
 var book_instance_controller = require('../controllers/bookinstanceController');
+const validation_controller = require('../controllers/requestValidation'); // for request validation and sanitization
 
 
 /// BOOK ROUTES ///
@@ -71,7 +72,7 @@ router.get('/authors', author_controller.author_list);
 router.get('/genre/create', genre_controller.genre_create_get);
 
 /* POST request for creating Genre. */
-router.post('/genre/create', genre_controller.genre_create_post);
+router.post('/genre/create', validation_controller.genre_create_post_validation, genre_controller.genre_create_post);
 
 /* GET request to delete Genre. */
 router.get('/genre/:id/delete', genre_controller.genre_delete_get);
