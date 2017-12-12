@@ -1,4 +1,5 @@
-const { validationResult } = require('express-validator/check');
+const { check,body,validationResult } = require('express-validator/check');
+const { matchedData, sanitize } = require('express-validator/filter');
 var Genre = require('../models/genre');
 var Book = require('../models/book');
 var async = require('async');
@@ -46,7 +47,14 @@ exports.genre_create_get = function(req, res, next) {
 };
 
 // Handle Genre create on POST
-exports.genre_create_post = function(req, res, next) {
+exports.genre_create_post =  [
+    // validate and sanitize request
+   
+    //Check that the name field is not empty also trim and escape the name field.
+      body('name', 'Genre name required').isLength({ min: 1 }).trim().escape(),
+      
+    // process request after validation and sanitization
+    (req, res, next) => {
 
     //Extract the validation errors from a request 
     const errors = validationResult(req);
@@ -87,7 +95,7 @@ exports.genre_create_post = function(req, res, next) {
              });
     }
 
-};
+}];
 
 // Display Genre delete form on GET
 exports.genre_delete_get = function(req, res, next) {
