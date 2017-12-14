@@ -51,7 +51,7 @@ exports.genre_create_post =  [
     // validate and sanitize request
    
     //Check that the name field is not empty 
-      body('name', 'Genre name required').isLength({ min: 1 }),
+      body('name', 'Genre name required').isLength({ min: 1 }).trim(),
     //Sanitize(Trim and escape) the name field
       sanitizeBody('name').trim().escape(),
       
