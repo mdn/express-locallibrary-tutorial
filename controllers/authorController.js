@@ -31,7 +31,12 @@ exports.author_detail = function(req, res, next) {
           .exec(callback)
         },
     }, function(err, results) {
-        if (err) { return next(err); }
+        if (err) { return next(err); } // Error in API usage.
+        if (results.author==null) { // No results.
+            var err = new Error('Author not found');
+            err.status = 404;
+            return next(err);
+        }
         // Successful, so render.
         res.render('author_detail', { title: 'Author Detail', author: results.author, author_books: results.authors_books } );
     });
@@ -104,6 +109,11 @@ exports.author_delete_get = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
+        if (results.author==null) { // No results.
+            var err = new Error('Author not found');
+            err.status = 404;
+            return next(err);
+        }
         // Successful, so render.
         res.render('author_delete', { title: 'Delete Author', author: results.author, author_books: results.authors_books } );
     });
@@ -146,7 +156,12 @@ exports.author_update_get = function(req, res, next) {
 
     Author.findById(req.params.id, function(err, author) {
         if (err) { return next(err); }
-        //On success
+        if (results.author==null) { // No results.
+            var err = new Error('Author not found');
+            err.status = 404;
+            return next(err);
+        }
+        // Success
         res.render('author_form', { title: 'Update Author', author: author });
 
     });

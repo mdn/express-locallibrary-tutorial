@@ -25,6 +25,11 @@ exports.bookinstance_detail = function(req, res, next) {
     .populate('book')
     .exec(function (err, bookinstance) {
       if (err) { return next(err); }
+      if (bookinstance==null) { // No results.
+          var err = new Error('Book copy not found');
+          err.status = 404;
+          return next(err);
+        }
       // Successful, so render.
       res.render('bookinstance_detail', { title: 'Book:', bookinstance:  bookinstance});
     })
@@ -100,9 +105,14 @@ exports.bookinstance_delete_get = function(req, res, next) {
     BookInstance.findById(req.params.id)
     .populate('book')
     .exec(function (err, bookinstance) {
-      if (err) { return next(err); }
-      // Successful, so render.
-      res.render('bookinstance_delete', { title: 'Delete BookInstance', bookinstance:  bookinstance});
+        if (err) { return next(err); }
+        if (bookinstance==null) { // No results.
+            var err = new Error('Book copy not found');
+            err.status = 404;
+            return next(err);
+        }
+        // Successful, so render.
+        res.render('bookinstance_delete', { title: 'Delete BookInstance', bookinstance:  bookinstance});
     })
 
 };
@@ -133,7 +143,12 @@ exports.bookinstance_update_get = function(req, res, next) {
 
         }, function(err, results) {
             if (err) { return next(err); }
-
+            if (results.bookinstance==null) { // No results.
+                var err = new Error('Book copy not found');
+                err.status = 404;
+                return next(err);
+            }
+            // Success.
             res.render('bookinstance_form', { title: 'Update  BookInstance', book_list : results.books, selected_book : results.bookinstance.book._id, bookinstance:results.bookinstance });
         });
 
