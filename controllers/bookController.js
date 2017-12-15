@@ -3,7 +3,7 @@ var Author = require('../models/author');
 var Genre = require('../models/genre');
 var BookInstance = require('../models/bookinstance');
 
-const { check,body,validationResult } = require('express-validator/check');
+const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 var async = require('async');
@@ -68,7 +68,7 @@ exports.book_detail = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        // Successful, so render
+        // Successful, so render.
         res.render('book_detail', { title: 'Title', book:  results.book, book_instances: results.book_instance } );
     });
 

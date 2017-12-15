@@ -2,7 +2,7 @@ var Author = require('../models/author')
 var async = require('async')
 var Book = require('../models/book')
 
-const { check,body,validationResult } = require('express-validator/check');
+const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all Authors
