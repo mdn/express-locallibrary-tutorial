@@ -116,6 +116,11 @@ exports.genre_delete_get = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
+        if (results.genre==null) { // No results.
+            var err = new Error('Genre not found');
+            err.status = 404;
+            return next(err);
+        }
         // Successful, so render.
         res.render('genre_delete', { title: 'Delete Genre', genre: results.genre, genre_books: results.genre_books } );
     });
@@ -144,7 +149,7 @@ exports.genre_delete_post = function(req, res, next) {
             // Genre has no books. Delete object and redirect to the list of genres.
             Genre.findByIdAndRemove(req.body.id, function deleteGenre(err) {
                 if (err) { return next(err); }
-                // Success - got to genres list
+                // Success - go to genres list.
                 res.redirect('/catalog/genres');
             });
 
@@ -158,7 +163,7 @@ exports.genre_update_get = function(req, res, next) {
 
     Genre.findById(req.params.id, function(err, genre) {
         if (err) { return next(err); }
-        if (genre==null) { //No results
+        if (genre==null) { // No results.
             var err = new Error('Genre not found');
             err.status = 404;
             return next(err);
