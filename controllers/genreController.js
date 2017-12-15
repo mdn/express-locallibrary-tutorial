@@ -35,12 +35,12 @@ exports.genre_detail = function(req, res, next) {
 
     }, function(err, results) {
         if (err) { return next(err); }
-        if (results.genre==null) { //No results
+        if (results.genre==null) { // No results.
             var err = new Error('Genre not found');
             err.status = 404;
             return next(err);
         }
-        //Successful, so render
+        // Successful, so render.
         res.render('genre_detail', { title: 'Genre Detail', genre: results.genre, genre_books: results.genre_books } );
     });
 

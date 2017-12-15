@@ -156,7 +156,7 @@ exports.author_update_get = function(req, res, next) {
 
     Author.findById(req.params.id, function(err, author) {
         if (err) { return next(err); }
-        if (results.author==null) { // No results.
+        if (author==null) { // No results.
             var err = new Error('Author not found');
             err.status = 404;
             return next(err);
@@ -186,7 +186,7 @@ exports.author_update_post = [
 
     // Process request after validation and sanitization.
     (req, res, next) => {
-
+        
         // Extract the validation errors from a request 
         const errors = validationResult(req);
 
