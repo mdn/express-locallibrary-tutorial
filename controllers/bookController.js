@@ -264,6 +264,17 @@ exports.book_update_get = function(req, res, next) {
 
 // Handle book update on POST
 exports.book_update_post = [
+
+    // Convert the genre to an array
+    (req, res, next) => {
+        if(!(req.body.genre instanceof Array)){
+            if(typeof req.body.genre==='undefined')
+            req.body.genre=[];
+            else
+            req.body.genre=new Array(req.body.genre);
+        }
+        next();
+    },
    
     // Validate fields
     body('title', 'Title must not be empty.').isLength({ min: 1 }).trim(),
@@ -276,7 +287,8 @@ exports.book_update_post = [
     sanitizeBody('author').trim().escape(),
     sanitizeBody('summary').trim().escape(),
     sanitizeBody('isbn').trim().escape(),
-    
+    sanitizeBody('genre.*').trim().escape(),
+
     // Process request after validation and sanitization
     (req, res, next) => {
         
