@@ -94,33 +94,32 @@ exports.book_create_get = function(req, res, next) {
 
 // Handle book create on POST
 exports.book_create_post = [
-   
+    // Convert the genre to an array
+    (req, res, next) => {
+        if(!(req.body.genre instanceof Array)){
+            if(typeof req.body.genre==='undefined')
+            req.body.genre=[];
+            else
+            req.body.genre=new Array(req.body.genre);
+        }
+        next();
+    },
+
     // Validate fields
     body('title', 'Title must not be empty.').isLength({ min: 1 }).trim(),
     body('author', 'Author must not be empty.').isLength({ min: 1 }).trim(),
     body('summary', 'Summary must not be empty.').isLength({ min: 1 }).trim(),
     body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
-
+  
     // Sanitize fields
     sanitizeBody('title').trim().escape(),
     sanitizeBody('author').trim().escape(),
     sanitizeBody('summary').trim().escape(),
     sanitizeBody('isbn').trim().escape(),
-    
+    sanitizeBody('genre.*').trim().escape(),
     // Process request after validation and sanitization
     (req, res, next) => {
         
-        // Sanitize genre array for each value individually (validator only works for strings)
-        // Use legacy validator!
-         if(req.body.genre instanceof Array){
-            req.body.genre = req.body.genre.map((initialGenre)=>{
-                req.body.tempGenre = initialGenre;
-                req.sanitize('tempGenre').escape();
-                return req.body.tempGenre;
-            });
-            delete req.body.tempGenre;
-            }else
-            req.sanitize('genre').escape();
 
         // Extract the validation errors from a request 
         const errors = validationResult(req);
@@ -131,7 +130,7 @@ exports.book_create_post = [
             author: req.body.author,
             summary: req.body.summary,
             isbn: req.body.isbn,
-            genre: (typeof req.body.genre==='undefined') ? [] : req.body.genre
+            genre: req.body.genre
            });
 
         if (!errors.isEmpty()) {
