@@ -291,18 +291,6 @@ exports.book_update_post = [
 
     // Process request after validation and sanitization
     (req, res, next) => {
-        
-        // Sanitize genre array for each value individually (validator only works for strings)
-        // Use legacy validator!
-         if(req.body.genre instanceof Array){
-            req.body.genre = req.body.genre.map((initialGenre)=>{
-                req.body.tempGenre = initialGenre;
-                req.sanitize('tempGenre').escape();
-                return req.body.tempGenre;
-            });
-            delete req.body.tempGenre;
-            }else
-            req.sanitize('genre').escape();
 
         // Extract the validation errors from a request 
         const errors = validationResult(req);
