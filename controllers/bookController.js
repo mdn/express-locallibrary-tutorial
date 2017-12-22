@@ -183,9 +183,7 @@ exports.book_delete_get = function(req, res, next) {
     }, function(err, results) {
         if (err) { return next(err); }
         if (results.book==null) { // No results.
-            var err = new Error('Book not found');
-            err.status = 404;
-            return next(err);
+            res.redirect('/catalog/books');
         }
         // Successful, so render
         res.render('book_delete', { title: 'Delete Book', book: results.book, book_instances: results.book_bookinstances } );

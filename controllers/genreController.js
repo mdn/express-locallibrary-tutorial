@@ -52,11 +52,11 @@ exports.genre_create_get = function(req, res, next) {
 };
 
 // Handle Genre create on POST
-exports.genre_create_post =  [
-   
+exports.genre_create_post = [
+
     // Validate that the name field is not empty.
     body('name', 'Genre name required').isLength({ min: 1 }).trim(),
-    
+
     // Sanitize (trim and escape) the name field.
     sanitizeBody('name').trim().escape(),
 
@@ -82,7 +82,6 @@ exports.genre_create_post =  [
             // Check if Genre with same name already exists.
             Genre.findOne({ 'name': req.body.name })
                 .exec( function(err, found_genre) {
-                     console.log('found_genre: ' + found_genre);
                      if (err) { return next(err); }
 
                      if (found_genre) {
@@ -117,9 +116,7 @@ exports.genre_delete_get = function(req, res, next) {
     }, function(err, results) {
         if (err) { return next(err); }
         if (results.genre==null) { // No results.
-            var err = new Error('Genre not found');
-            err.status = 404;
-            return next(err);
+            res.redirect('/catalog/genres');
         }
         // Successful, so render.
         res.render('genre_delete', { title: 'Delete Genre', genre: results.genre, genre_books: results.genre_books } );
