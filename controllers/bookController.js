@@ -112,10 +112,7 @@ exports.book_create_post = [
     body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
   
     // Sanitize fields
-    sanitizeBody('title').trim().escape(),
-    sanitizeBody('author').trim().escape(),
-    sanitizeBody('summary').trim().escape(),
-    sanitizeBody('isbn').trim().escape(),
+    sanitizeBody('*').trim().escape(),
     sanitizeBody('genre.*').trim().escape(),
     // Process request after validation and sanitization
     (req, res, next) => {
