@@ -5,7 +5,7 @@ var async = require('async');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
-// Display list of all Genre
+// Display list of all Genre.
 exports.genre_list = function(req, res, next) {
 
   Genre.find()
@@ -18,7 +18,7 @@ exports.genre_list = function(req, res, next) {
 
 };
 
-// Display detail page for a specific Genre
+// Display detail page for a specific Genre.
 exports.genre_detail = function(req, res, next) {
 
     async.parallel({
@@ -46,12 +46,12 @@ exports.genre_detail = function(req, res, next) {
 
 };
 
-// Display Genre create form on GET
+// Display Genre create form on GET.
 exports.genre_create_get = function(req, res, next) {
     res.render('genre_form', { title: 'Create Genre'});
 };
 
-// Handle Genre create on POST
+// Handle Genre create on POST.
 exports.genre_create_post = [
 
     // Validate that the name field is not empty.
@@ -85,14 +85,14 @@ exports.genre_create_post = [
                      if (err) { return next(err); }
 
                      if (found_genre) {
-                         // Genre exists, redirect to its detail page
+                         // Genre exists, redirect to its detail page.
                          res.redirect(found_genre.url);
                      }
                      else {
 
                          genre.save(function (err) {
                            if (err) { return next(err); }
-                           // Genre saved. Redirect to genre detail page
+                           // Genre saved. Redirect to genre detail page.
                            res.redirect(genre.url);
                          });
 
@@ -103,7 +103,7 @@ exports.genre_create_post = [
     }
 ];
 
-// Display Genre delete form on GET
+// Display Genre delete form on GET.
 exports.genre_delete_get = function(req, res, next) {
 
     async.parallel({
@@ -124,7 +124,7 @@ exports.genre_delete_get = function(req, res, next) {
 
 };
 
-// Handle Genre delete on POST
+// Handle Genre delete on POST.
 exports.genre_delete_post = function(req, res, next) {
 
     async.parallel({
@@ -155,7 +155,7 @@ exports.genre_delete_post = function(req, res, next) {
 
 };
 
-// Display Genre update form on GET
+// Display Genre update form on GET.
 exports.genre_update_get = function(req, res, next) {
 
     Genre.findById(req.params.id, function(err, genre) {
@@ -165,13 +165,13 @@ exports.genre_update_get = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        // Success
+        // Success.
         res.render('genre_form', { title: 'Update Genre', genre: genre });
     });
 
 };
 
-// Handle Genre update on POST
+// Handle Genre update on POST.
 exports.genre_update_post = [
    
     // Validate that the name field is not empty.
@@ -183,7 +183,7 @@ exports.genre_update_post = [
     // Process request after validation and sanitization.
     (req, res, next) => {
 
-        // Extract the validation errors from a request 
+        // Extract the validation errors from a request .
         const errors = validationResult(req);
 
     // Create a genre object with escaped and trimmed data (and the old id!)

@@ -5,7 +5,7 @@ var async = require('async')
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
-// Display list of all BookInstances
+// Display list of all BookInstances.
 exports.bookinstance_list = function(req, res, next) {
 
   BookInstance.find()
@@ -18,7 +18,7 @@ exports.bookinstance_list = function(req, res, next) {
 
 };
 
-// Display detail page for a specific BookInstance
+// Display detail page for a specific BookInstance.
 exports.bookinstance_detail = function(req, res, next) {
 
     BookInstance.findById(req.params.id)
@@ -36,7 +36,7 @@ exports.bookinstance_detail = function(req, res, next) {
 
 };
 
-// Display BookInstance create form on GET
+// Display BookInstance create form on GET.
 exports.bookinstance_create_get = function(req, res, next) {
 
      Book.find({},'title')
@@ -48,21 +48,21 @@ exports.bookinstance_create_get = function(req, res, next) {
 
 };
 
-// Handle BookInstance create on POST
+// Handle BookInstance create on POST.
 exports.bookinstance_create_post = [
 
-    // Validate fields
+    // Validate fields.
     body('book', 'Book must be specified').isLength({ min: 1 }).trim(),
     body('imprint', 'Imprint must be specified').isLength({ min: 1 }).trim(),
     body('due_back', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
     
-    // Sanitize fields
+    // Sanitize fields.
     sanitizeBody('book').trim().escape(),
     sanitizeBody('imprint').trim().escape(),
     sanitizeBody('status').trim().escape(),
     sanitizeBody('due_back').toDate(),
     
-    // Process request after validation and sanitization
+    // Process request after validation and sanitization.
     (req, res, next) => {
 
         // Extract the validation errors from a request.
@@ -99,7 +99,7 @@ exports.bookinstance_create_post = [
 
 
 
-// Display BookInstance delete form on GET
+// Display BookInstance delete form on GET.
 exports.bookinstance_delete_get = function(req, res, next) {
 
     BookInstance.findById(req.params.id)
@@ -115,7 +115,7 @@ exports.bookinstance_delete_get = function(req, res, next) {
 
 };
 
-// Handle BookInstance delete on POST
+// Handle BookInstance delete on POST.
 exports.bookinstance_delete_post = function(req, res, next) {
     
     // Assume valid BookInstance id in field.
@@ -127,7 +127,7 @@ exports.bookinstance_delete_post = function(req, res, next) {
 
 };
 
-// Display BookInstance update form on GET
+// Display BookInstance update form on GET.
 exports.bookinstance_update_get = function(req, res, next) {
 
     // Get book, authors and genres for form.
@@ -152,24 +152,24 @@ exports.bookinstance_update_get = function(req, res, next) {
 
 };
 
-// Handle BookInstance update on POST
+// Handle BookInstance update on POST.
 exports.bookinstance_update_post = [
 
-    // Validate fields
+    // Validate fields.
     body('book', 'Book must be specified').isLength({ min: 1 }).trim(),
     body('imprint', 'Imprint must be specified').isLength({ min: 1 }).trim(),
     body('due_back', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
     
-    // Sanitize fields
+    // Sanitize fields.
     sanitizeBody('book').trim().escape(),
     sanitizeBody('imprint').trim().escape(),
     sanitizeBody('status').trim().escape(),
     sanitizeBody('due_back').toDate(),
     
-    // Process request after validation and sanitization
+    // Process request after validation and sanitization.
     (req, res, next) => {
 
-        // Extract the validation errors from a request 
+        // Extract the validation errors from a request.
         const errors = validationResult(req);
 
         // Create a BookInstance object with escaped/trimmed data and current id.
@@ -182,7 +182,7 @@ exports.bookinstance_update_post = [
            });
 
         if (!errors.isEmpty()) {
-            // There are errors so render the form again, passing sanitized values and errors
+            // There are errors so render the form again, passing sanitized values and errors.
             Book.find({},'title')
                 .exec(function (err, books) {
                     if (err) { return next(err); }
