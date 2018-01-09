@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var moment = require('moment'); //for date handling
+var moment = require('moment'); // For date handling
 
 var Schema = mongoose.Schema;
 
@@ -52,5 +52,5 @@ AuthorSchema
   return moment(this.date_of_death).format('YYYY-MM-DD');
 });
 
-//Export model
+// Export model
 module.exports = mongoose.model('Author', AuthorSchema);

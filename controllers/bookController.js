@@ -158,7 +158,7 @@ exports.book_create_post = [
             // Data from form is valid. Save book.
             book.save(function (err) {
                 if (err) { return next(err); }
-                   //successful - redirect to new book record.
+                   // Successful - redirect to new book record.
                    res.redirect(book.url);
                 });
         }
@@ -212,7 +212,7 @@ exports.book_delete_post = function(req, res, next) {
             // Book has no BookInstance objects. Delete object and redirect to the list of books.
             Book.findByIdAndRemove(req.body.id, function deleteBook(err) {
                 if (err) { return next(err); }
-                //Success - got to books list
+                // Success - got to books list
                 res.redirect('/catalog/books');
             });
 
@@ -297,7 +297,7 @@ exports.book_update_post = [
             summary: req.body.summary,
             isbn: req.body.isbn,
             genre: (typeof req.body.genre==='undefined') ? [] : req.body.genre,
-            _id:req.params.id //This is required, or a new ID will be assigned!
+            _id:req.params.id // This is required, or a new ID will be assigned!
            });
 
         if (!errors.isEmpty()) {

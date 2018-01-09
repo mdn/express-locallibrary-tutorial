@@ -85,14 +85,14 @@ exports.genre_create_post = [
                      if (err) { return next(err); }
 
                      if (found_genre) {
-                         //Genre exists, redirect to its detail page
+                         // Genre exists, redirect to its detail page
                          res.redirect(found_genre.url);
                      }
                      else {
 
                          genre.save(function (err) {
                            if (err) { return next(err); }
-                           //Genre saved. Redirect to genre detail page
+                           // Genre saved. Redirect to genre detail page
                            res.redirect(genre.url);
                          });
 
