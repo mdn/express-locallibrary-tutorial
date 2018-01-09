@@ -68,7 +68,7 @@ exports.author_create_post = [
     // Process request after validation and sanitization
     (req, res, next) => {
 
-        // Extract the validation errors from a request 
+        // Extract the validation errors from a request
         const errors = validationResult(req);
 
         // Create an Author object with escaped and trimmed data.
@@ -188,7 +188,7 @@ exports.author_update_post = [
         // Extract the validation errors from a request 
         const errors = validationResult(req);
 
-        //Create Author object with escaped and trimmed data (and the old id!)
+        // Create Author object with escaped and trimmed data (and the old id!)
         var author = new Author(
             {
             first_name: req.body.first_name,
