@@ -32,7 +32,7 @@ exports.index = function(req, res) {
 };
 
 
-// Display list of all books
+// Display list of all books.
 exports.book_list = function(req, res, next) {
 
   Book.find({}, 'title author ')
@@ -45,7 +45,7 @@ exports.book_list = function(req, res, next) {
 
 };
 
-// Display detail page for a specific book
+// Display detail page for a specific book.
 exports.book_detail = function(req, res, next) {
 
     async.parallel({
@@ -74,7 +74,7 @@ exports.book_detail = function(req, res, next) {
 
 };
 
-// Display book create form on GET
+// Display book create form on GET.
 exports.book_create_get = function(req, res, next) {
 
     // Get all authors and genres, which we can use for adding to our book.
@@ -92,9 +92,9 @@ exports.book_create_get = function(req, res, next) {
 
 };
 
-// Handle book create on POST
+// Handle book create on POST.
 exports.book_create_post = [
-    // Convert the genre to an array
+    // Convert the genre to an array.
     (req, res, next) => {
         if(!(req.body.genre instanceof Array)){
             if(typeof req.body.genre==='undefined')
@@ -105,20 +105,20 @@ exports.book_create_post = [
         next();
     },
 
-    // Validate fields
+    // Validate fields.
     body('title', 'Title must not be empty.').isLength({ min: 1 }).trim(),
     body('author', 'Author must not be empty.').isLength({ min: 1 }).trim(),
     body('summary', 'Summary must not be empty.').isLength({ min: 1 }).trim(),
     body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
   
-    // Sanitize fields
+    // Sanitize fields.
     sanitizeBody('*').trim().escape(),
     sanitizeBody('genre.*').trim().escape(),
-    // Process request after validation and sanitization
+    // Process request after validation and sanitization.
     (req, res, next) => {
         
 
-        // Extract the validation errors from a request 
+        // Extract the validation errors from a request.
         const errors = validationResult(req);
 
         // Create a Book object with escaped and trimmed data.
@@ -133,7 +133,7 @@ exports.book_create_post = [
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/error messages.
 
-            // Get all authors and genres for form
+            // Get all authors and genres for form.
             async.parallel({
                 authors: function(callback) {
                     Author.find(callback);
@@ -144,7 +144,7 @@ exports.book_create_post = [
             }, function(err, results) {
                 if (err) { return next(err); }
 
-                // Mark our selected genres as checked
+                // Mark our selected genres as checked.
                 for (let i = 0; i < results.genres.length; i++) {
                     if (book.genre.indexOf(results.genres[i]._id) > -1) {
                         results.genres[i].checked='true';
@@ -167,7 +167,7 @@ exports.book_create_post = [
 
 
 
-// Display book delete form on GET
+// Display book delete form on GET.
 exports.book_delete_get = function(req, res, next) {
 
     async.parallel({
@@ -182,13 +182,13 @@ exports.book_delete_get = function(req, res, next) {
         if (results.book==null) { // No results.
             res.redirect('/catalog/books');
         }
-        // Successful, so render
+        // Successful, so render.
         res.render('book_delete', { title: 'Delete Book', book: results.book, book_instances: results.book_bookinstances } );
     });
 
 };
 
-// Handle book delete on POST
+// Handle book delete on POST.
 exports.book_delete_post = function(req, res, next) {
 
     // Assume the post has valid id (ie no validation/sanitization).
@@ -212,7 +212,7 @@ exports.book_delete_post = function(req, res, next) {
             // Book has no BookInstance objects. Delete object and redirect to the list of books.
             Book.findByIdAndRemove(req.body.id, function deleteBook(err) {
                 if (err) { return next(err); }
-                // Success - got to books list
+                // Success - got to books list.
                 res.redirect('/catalog/books');
             });
 
@@ -242,8 +242,8 @@ exports.book_update_get = function(req, res, next) {
                 err.status = 404;
                 return next(err);
             }
-            // Success
-            // Mark our selected genres as checked
+            // Success.
+            // Mark our selected genres as checked.
             for (var all_g_iter = 0; all_g_iter < results.genres.length; all_g_iter++) {
                 for (var book_g_iter = 0; book_g_iter < results.book.genre.length; book_g_iter++) {
                     if (results.genres[all_g_iter]._id.toString()==results.book.genre[book_g_iter]._id.toString()) {
@@ -257,10 +257,10 @@ exports.book_update_get = function(req, res, next) {
 };
 
 
-// Handle book update on POST
+// Handle book update on POST.
 exports.book_update_post = [
 
-    // Convert the genre to an array
+    // Convert the genre to an array.
     (req, res, next) => {
         if(!(req.body.genre instanceof Array)){
             if(typeof req.body.genre==='undefined')
@@ -271,23 +271,23 @@ exports.book_update_post = [
         next();
     },
    
-    // Validate fields
+    // Validate fields.
     body('title', 'Title must not be empty.').isLength({ min: 1 }).trim(),
     body('author', 'Author must not be empty.').isLength({ min: 1 }).trim(),
     body('summary', 'Summary must not be empty.').isLength({ min: 1 }).trim(),
     body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
 
-    // Sanitize fields
+    // Sanitize fields.
     sanitizeBody('title').trim().escape(),
     sanitizeBody('author').trim().escape(),
     sanitizeBody('summary').trim().escape(),
     sanitizeBody('isbn').trim().escape(),
     sanitizeBody('genre.*').trim().escape(),
 
-    // Process request after validation and sanitization
+    // Process request after validation and sanitization.
     (req, res, next) => {
 
-        // Extract the validation errors from a request 
+        // Extract the validation errors from a request.
         const errors = validationResult(req);
 
         // Create a Book object with escaped/trimmed data and old id.
@@ -314,7 +314,7 @@ exports.book_update_post = [
             }, function(err, results) {
                 if (err) { return next(err); }
 
-                // Mark our selected genres as checked
+                // Mark our selected genres as checked.
                 for (let i = 0; i < results.genres.length; i++) {
                     if (book.genre.indexOf(results.genres[i]._id) > -1) {
                         results.genres[i].checked='true';
