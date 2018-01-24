@@ -15,16 +15,16 @@
     "compression": "^1.7.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
-    "express": "~4.15.5",
+    "express": "~4.16.2",
     "express-validator": "^4.3.0",
-    "helmet": "^3.9.0",
-    "moment": "^2.19.3",
-    "mongoose": "^4.13.6",
+    "helmet": "^3.10.0",
+    "moment": "^2.20.1",
+    "mongoose": "^5.0.1",
     "morgan": "~1.9.0",
-    "pug": "~2.0.0-beta11",
+    "pug": "~2.0.0-rc.4",
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
-    "nodemon": "^1.12.5"
+    "nodemon": "^1.14.11"
   }
 }
