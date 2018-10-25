@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='username') Username:
+      input#username.form-control(type='text' placeholder='johndoe' name='username' required value=(undefined===user ? '' : user.username))
+    div.form-group
+      label(for='fullname') Full Name:
+      input#fullname.form-control(type='text' placeholder='John Doe' name='fullname' required value=(undefined===user ? '' : user.fullname))
+    div.form-group
+      label(for='email') E-mail:
+      input#email.form-control(type='email' placeholder='johndoe@john.doe' name='email' required value=(undefined===user ? '' : user.email))
+    div.form-group
+      label(for='role') User Role:
+      select#role.form-control(type='select', placeholder='Select role' name='role' required)
+        option(value=0 selected=(undefined===user || user.role!=0 ? false:'selected')) User
+        option(value=1 selected=(undefined===user || user.role!=1 ? false:'selected')) Editor
+        option(value=2 selected=(undefined===user || user.role!=2 ? false:'selected')) Admin
+
+    if is_update_form
+      hr
+      p Use the fields below if you want to change your password, too. Otherwise, leave blank.
+      hr
+    
+    div.form-group
+      label(for='password') #{is_update_form ? 'New Password:' : 'Password:'}
+      input#password.form-control(type='password' name='password' required=!is_update_form)
+    div.form-group
+      label(for='password_confirm') #{is_update_form ? 'Confirm New Password:' : 'Confirm Password:'}
+      input#password_confirm.form-control(type='password' name='password_confirm' required=!is_update_form)
+    button.btn.btn-primary(type='submit') Submit
+
+  br
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

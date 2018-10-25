@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method="POST" action=is_first_step ? "/users/reset" : "/users/resetfinal")
+
+    if is_first_step
+      p Please enter your username and email. If they match a user, you will be redirected to the password reset page.
+      div.form-group
+        label(for="username") Username:
+        input#username.form-control(type="text" placeholder="johndoe" name="username" required=is_first_step value=(undefined===user ? "" : user.username))
+      div.form-group
+        label(for="email") E-mail:
+        input#email.form-control(type="email" placeholder="johndoe@john.doe" name="email" required=is_first_step value=(undefined===user ? "" : user.email))
+      
+    if is_second_step
+      p Almost there. Enter your new password twice and you're good to go!
+      div.form-group
+        label(for="password") New Password:
+        input#password.form-control(type="password" name="password" required=is_second_step)
+      div.form-group
+        label(for="password_confirm") Confirm New Password:
+        input#password_confirm.form-control(type="password" name="password_confirm" required=is_second_step)
+      input(type="hidden" name="userid" value=user._id)
+      
+    button.btn.btn-primary(type="submit") #{is_first_step ? "Next" : "Done"} 
+
+  br
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

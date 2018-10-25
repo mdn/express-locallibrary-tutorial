@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='username') Username:
+      input#username.form-control(type='text' placeholder='johndoe' name='username' required value=(undefined===user ? '' : user.username))
+    div.form-group
+      label(for='password') Password:
+      input#password.form-control(type='password' name='password' required)
+    button.btn.btn-primary(type='submit') Submit
+
+  br
+  a(href='/users/reset') Forgot your password?
+  br
+  
+  br
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
