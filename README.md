@@ -1,5 +1,8 @@
 # express-locallibrary-tutorial
-Tutorial "Local Library" website written in in Node/Express.
+Tutorial "Local Library" website written in Node/Express.
+
+
+For the version which implements User Authentication and Authorization go to [auth branch](/../../tree/auth).
 
 ----
 
