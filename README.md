@@ -2,6 +2,13 @@
 Tutorial "Local Library" website written in in Node/Express.
 
 ----
+This branch implements Authentication and simple Role-Based Authorization.
+
+Live version can be found [here](https://awesomelibrary.herokuapp.com/).
+
+Keep in mind that this codebase is not documented yet!
+
+----
 
 This web application creates an online catalog for a small local library, where users can browse available books and manage their accounts.
 
