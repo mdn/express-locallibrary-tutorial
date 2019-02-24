@@ -19,7 +19,7 @@ var BookInstance = require('./models/bookinstance')
 
 var mongoose = require('mongoose');
 var mongoDB = userArgs[0];
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -106,7 +106,7 @@ function bookInstanceCreate(book, imprint, due_back, status, cb) {
 
 
 function createGenreAuthors(cb) {
-    async.parallel([
+    async.series([
         function(callback) {
           authorCreate('Patrick', 'Rothfuss', '1973-06-06', false, callback);
         },
