@@ -57,8 +57,8 @@ exports.genre_create_post = [
     // Validate that the name field is not empty.
     body('name', 'Genre name required').isLength({ min: 1 }).trim(),
 
-    // Sanitize (trim and escape) the name field.
-    sanitizeBody('name').trim().escape(),
+    // Sanitize (trim) the name field.
+    sanitizeBody('name').escape(),
 
     // Process request after validation and sanitization.
     (req, res, next) => {
@@ -177,8 +177,8 @@ exports.genre_update_post = [
     // Validate that the name field is not empty.
     body('name', 'Genre name required').isLength({ min: 1 }).trim(),
     
-    // Sanitize (trim and escape) the name field.
-    sanitizeBody('name').trim().escape(),
+    // Sanitize (escape) the name field.
+    sanitizeBody('name').escape(),
 
     // Process request after validation and sanitization.
     (req, res, next) => {
