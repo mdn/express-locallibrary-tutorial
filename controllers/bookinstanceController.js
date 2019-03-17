@@ -57,9 +57,9 @@ exports.bookinstance_create_post = [
     body('due_back', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
     
     // Sanitize fields.
-    sanitizeBody('book').trim().escape(),
-    sanitizeBody('imprint').trim().escape(),
-    sanitizeBody('status').trim().escape(),
+    sanitizeBody('book').escape(),
+    sanitizeBody('imprint').escape(),
+    sanitizeBody('status').escape(),
     sanitizeBody('due_back').toDate(),
     
     // Process request after validation and sanitization.
@@ -161,9 +161,9 @@ exports.bookinstance_update_post = [
     body('due_back', 'Invalid date').optional({ checkFalsy: true }).isISO8601(),
     
     // Sanitize fields.
-    sanitizeBody('book').trim().escape(),
-    sanitizeBody('imprint').trim().escape(),
-    sanitizeBody('status').trim().escape(),
+    sanitizeBody('book').escape(),
+    sanitizeBody('imprint').escape(),
+    sanitizeBody('status').escape(),
     sanitizeBody('due_back').toDate(),
     
     // Process request after validation and sanitization.
