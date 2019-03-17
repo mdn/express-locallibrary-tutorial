@@ -112,8 +112,8 @@ exports.book_create_post = [
     body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
   
     // Sanitize fields.
-    sanitizeBody('*').trim().escape(),
-    sanitizeBody('genre.*').trim().escape(),
+    sanitizeBody('*').escape(),
+    sanitizeBody('genre.*').escape(),
     // Process request after validation and sanitization.
     (req, res, next) => {
         
@@ -278,11 +278,11 @@ exports.book_update_post = [
     body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
 
     // Sanitize fields.
-    sanitizeBody('title').trim().escape(),
-    sanitizeBody('author').trim().escape(),
-    sanitizeBody('summary').trim().escape(),
-    sanitizeBody('isbn').trim().escape(),
-    sanitizeBody('genre.*').trim().escape(),
+    sanitizeBody('title').escape(),
+    sanitizeBody('author').escape(),
+    sanitizeBody('summary').escape(),
+    sanitizeBody('isbn').escape(),
+    sanitizeBody('genre.*').escape(),
 
     // Process request after validation and sanitization.
     (req, res, next) => {
