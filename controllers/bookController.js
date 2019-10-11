@@ -12,19 +12,19 @@ exports.index = function(req, res) {
 
     async.parallel({
         book_count: function(callback) {
-            Book.count(callback);
+            Book.countDocuments(callback);
         },
         book_instance_count: function(callback) {
-            BookInstance.count(callback);
+            BookInstance.countDocuments(callback);
         },
         book_instance_available_count: function(callback) {
-            BookInstance.count({status:'Available'},callback);
+            BookInstance.countDocuments({status:'Available'},callback);
         },
         author_count: function(callback) {
-            Author.count(callback);
+            Author.countDocuments(callback);
         },
         genre_count: function(callback) {
-            Genre.count(callback);
+            Genre.countDocuments(callback);
         },
     }, function(err, results) {
         res.render('index', { title: 'Local Library Home', error: err, data: results });
@@ -110,13 +110,13 @@ exports.book_create_post = [
     body('author', 'Author must not be empty.').isLength({ min: 1 }).trim(),
     body('summary', 'Summary must not be empty.').isLength({ min: 1 }).trim(),
     body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
-  
+
     // Sanitize fields.
     sanitizeBody('*').escape(),
     sanitizeBody('genre.*').escape(),
     // Process request after validation and sanitization.
     (req, res, next) => {
-        
+
 
         // Extract the validation errors from a request.
         const errors = validationResult(req);
@@ -270,7 +270,7 @@ exports.book_update_post = [
         }
         next();
     },
-   
+
     // Validate fields.
     body('title', 'Title must not be empty.').isLength({ min: 1 }).trim(),
     body('author', 'Author must not be empty.').isLength({ min: 1 }).trim(),
@@ -334,4 +334,3 @@ exports.book_update_post = [
         }
     }
 ];
-
