@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www"
+    "devstart": "nodemon ./bin/www",
+    "serverstart": "DEBUG=local-library:* npm run devstart"
   },
   "dependencies": {
     "async": "^2.6.2",
