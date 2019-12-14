@@ -17,12 +17,12 @@
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-validator": "^5.3.1",
-    "helmet": "^3.15.1",
+    "helmet": "^3.21.2",
     "http-errors": "~1.6.2",
     "moment": "^2.24.0",
     "mongoose": "^5.4.13",
-    "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11"
+    "morgan": "^1.9.1",
+    "pug": "^2.0.4"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"
