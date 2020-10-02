@@ -2,29 +2,29 @@
   "name": "express-locallibrary-tutorial",
   "version": "0.0.0",
   "engines": {
-    "node": "10.15.1"
+    "node": "12.18.4"
   },
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "serverstart": "DEBUG=local-library:* npm run devstart"
+    "serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart"
   },
   "dependencies": {
     "async": "^2.6.2",
     "compression": "^1.7.3",
-    "cookie-parser": "~1.4.3",
+    "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "express": "~4.16.0",
+    "express": "~4.16.1",
     "express-validator": "^5.3.1",
     "helmet": "^3.15.1",
-    "http-errors": "~1.6.2",
+    "http-errors": "~1.6.3",
     "moment": "^2.24.0",
     "mongoose": "^5.4.13",
-    "morgan": "~1.9.0",
+    "morgan": "~1.9.1",
     "pug": "2.0.0-beta11"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^2.0.4"
   }
 }
