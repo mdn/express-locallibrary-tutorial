@@ -2,8 +2,7 @@ var Genre = require('../models/genre');
 var Book = require('../models/book');
 var async = require('async');
 
-const { body,validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { body,validationResult } = require("express-validator");
 
 // Display list of all Genre.
 exports.genre_list = function(req, res, next) {
@@ -54,11 +53,8 @@ exports.genre_create_get = function(req, res, next) {
 // Handle Genre create on POST.
 exports.genre_create_post = [
 
-    // Validate that the name field is not empty.
-    body('name', 'Genre name required').isLength({ min: 1 }).trim(),
-
-    // Sanitize (trim) the name field.
-    sanitizeBody('name').escape(),
+    // Validate and santise the name field.
+    body('name', 'Genre name required').isLength({ min: 1 }).trim().escape(),
 
     // Process request after validation and sanitization.
     (req, res, next) => {
@@ -174,11 +170,9 @@ exports.genre_update_get = function(req, res, next) {
 // Handle Genre update on POST.
 exports.genre_update_post = [
    
-    // Validate that the name field is not empty.
-    body('name', 'Genre name required').isLength({ min: 1 }).trim(),
+    // Validate and sanitze the name field.
+    body('name', 'Genre name required').isLength({ min: 1 }).trim().escape(),
     
-    // Sanitize (escape) the name field.
-    sanitizeBody('name').escape(),
 
     // Process request after validation and sanitization.
     (req, res, next) => {

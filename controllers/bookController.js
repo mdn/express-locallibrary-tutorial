@@ -3,8 +3,7 @@ var Author = require('../models/author');
 var Genre = require('../models/genre');
 var BookInstance = require('../models/bookinstance');
 
-const { body,validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { body,validationResult } = require("express-validator");
 
 var async = require('async');
 
@@ -106,15 +105,12 @@ exports.book_create_post = [
         next();
     },
 
-    // Validate fields.
-    body('title', 'Title must not be empty.').isLength({ min: 1 }).trim(),
-    body('author', 'Author must not be empty.').isLength({ min: 1 }).trim(),
-    body('summary', 'Summary must not be empty.').isLength({ min: 1 }).trim(),
-    body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
-  
-    // Sanitize fields.
-    sanitizeBody('*').escape(),
-    sanitizeBody('genre.*').escape(),
+    // Validate and sanitize fields.
+    body('title', 'Title must not be empty.').isLength({ min: 1 }).trim().escape(),
+    body('author', 'Author must not be empty.').isLength({ min: 1 }).trim().escape(),
+    body('summary', 'Summary must not be empty.').isLength({ min: 1 }).trim().escape(),
+    body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim().escape(),
+    body('genre.*').escape(),
     // Process request after validation and sanitization.
     (req, res, next) => {
         
@@ -272,18 +268,12 @@ exports.book_update_post = [
         next();
     },
    
-    // Validate fields.
-    body('title', 'Title must not be empty.').isLength({ min: 1 }).trim(),
-    body('author', 'Author must not be empty.').isLength({ min: 1 }).trim(),
-    body('summary', 'Summary must not be empty.').isLength({ min: 1 }).trim(),
-    body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
-
-    // Sanitize fields.
-    sanitizeBody('title').escape(),
-    sanitizeBody('author').escape(),
-    sanitizeBody('summary').escape(),
-    sanitizeBody('isbn').escape(),
-    sanitizeBody('genre.*').escape(),
+    // Validate and santitize fields.
+    body('title', 'Title must not be empty.').isLength({ min: 1 }).trim().escape(),
+    body('author', 'Author must not be empty.').isLength({ min: 1 }).trim().escape(),
+    body('summary', 'Summary must not be empty.').isLength({ min: 1 }).trim().escape(),
+    body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim().escape(),
+    body('genre.*').escape(),
 
     // Process request after validation and sanitization.
     (req, res, next) => {
