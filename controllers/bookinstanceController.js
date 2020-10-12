@@ -51,8 +51,8 @@ exports.bookinstance_create_get = function(req, res, next) {
 exports.bookinstance_create_post = [
 
     // Validate and sanitize fields.
-    body('book', 'Book must be specified').isLength({ min: 1 }).trim().escape(),
-    body('imprint', 'Imprint must be specified').isLength({ min: 1 }).trim().escape(),
+    body('book', 'Book must be specified').trim().isLength({ min: 1 }).escape(),
+    body('imprint', 'Imprint must be specified').trim().isLength({ min: 1 }).escape(),
     body('status').escape(),
     body('due_back', 'Invalid date').optional({ checkFalsy: true }).isISO8601().toDate(),
     
@@ -151,8 +151,8 @@ exports.bookinstance_update_get = function(req, res, next) {
 exports.bookinstance_update_post = [
 
     // Validate and sanitize fields.
-    body('book', 'Book must be specified').isLength({ min: 1 }).trim().escape(),
-    body('imprint', 'Imprint must be specified').isLength({ min: 1 }).trim().escape(),
+    body('book', 'Book must be specified').trim().isLength({ min: 1 }).escape(),
+    body('imprint', 'Imprint must be specified').trim().isLength({ min: 1 }).escape(),
     body('status').escape(),
     body('due_back', 'Invalid date').optional({ checkFalsy: true }).isISO8601().toDate(),
     
