@@ -19,7 +19,7 @@
     "express-validator": "^6.6.1",
     "helmet": "^3.15.1",
     "http-errors": "~1.6.3",
-    "moment": "^2.24.0",
+    "luxon": "^1.25.0",
     "mongoose": "^5.10.7",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11"
