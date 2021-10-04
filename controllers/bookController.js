@@ -35,6 +35,7 @@ exports.index = function(req, res) {
 exports.book_list = function(req, res, next) {
 
   Book.find({}, 'title author')
+    .sort({title : 1})
     .populate('author').exec(function (err, list_books) {
       if (err) {return next(err)} 
       else {
