@@ -23,19 +23,19 @@ block content
 
       h4 Copies
     
-        each book_copy in book_instances
-          hr
-          if book_copy.status=='Available'
-            p.text-success #{book_copy.status}
-          else if book_copy.status=='Maintenance'
-            p.text-danger #{book_copy.status}
-          else
-            p.text-warning #{book_copy.status} 
-          p #[strong Imprint:] #{book_copy.imprint}
-          if book_copy.status!='Available'
-            p #[strong Due back:] #{book_copy.due_back}
-          p #[strong Id:] 
-            a(href=book_copy.url) #{book_copy._id}
+      each book_copy in book_instances
+        hr
+        if book_copy.status=='Available'
+          p.text-success #{book_copy.status}
+        else if book_copy.status=='Maintenance'
+          p.text-danger #{book_copy.status}
+        else
+          p.text-warning #{book_copy.status} 
+        p #[strong Imprint:] #{book_copy.imprint}
+        if book_copy.status!='Available'
+          p #[strong Due back:] #{book_copy.due_back}
+        p #[strong Id:] 
+          a(href=book_copy.url) #{book_copy._id}
 
   else
     p Do you really want to delete this Book?
