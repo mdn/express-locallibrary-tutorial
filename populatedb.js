@@ -3,38 +3,38 @@
 console.log('This script populates some test books, authors, genres and bookinstances to your database. Specified database as argument - e.g.: populatedb mongodb+srv://cooluser:coolpassword@cluster0.a9azn.mongodb.net/local_library?retryWrites=true');
 
 // Get arguments passed on command line
-var userArgs = process.argv.slice(2);
+const userArgs = process.argv.slice(2);
 /*
 if (!userArgs[0].startsWith('mongodb')) {
     console.log('ERROR: You need to specify a valid mongodb URL as the first argument');
     return
 }
 */
-var async = require('async')
-var Book = require('./models/book')
-var Author = require('./models/author')
-var Genre = require('./models/genre')
-var BookInstance = require('./models/bookinstance')
+const async = require('async')
+const Book = require('./models/book')
+const Author = require('./models/author')
+const Genre = require('./models/genre')
+const BookInstance = require('./models/bookinstance')
 
 
-var mongoose = require('mongoose');
-var mongoDB = userArgs[0];
+const mongoose = require('mongoose');
+const mongoDB = userArgs[0];
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.Promise = global.Promise;
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var authors = []
-var genres = []
-var books = []
-var bookinstances = []
+let authors = []
+let genres = []
+let books = []
+let bookinstances = []
 
 function authorCreate(first_name, family_name, d_birth, d_death, cb) {
   authordetail = {first_name:first_name , family_name: family_name }
   if (d_birth != false) authordetail.date_of_birth = d_birth
   if (d_death != false) authordetail.date_of_death = d_death
   
-  var author = new Author(authordetail);
+  const author = new Author(authordetail);
        
   author.save(function (err) {
     if (err) {
@@ -48,7 +48,7 @@ function authorCreate(first_name, family_name, d_birth, d_death, cb) {
 }
 
 function genreCreate(name, cb) {
-  var genre = new Genre({ name: name });
+  const genre = new Genre({ name: name });
        
   genre.save(function (err) {
     if (err) {
@@ -70,7 +70,7 @@ function bookCreate(title, summary, isbn, author, genre, cb) {
   }
   if (genre != false) bookdetail.genre = genre
     
-  var book = new Book(bookdetail);    
+  const book = new Book(bookdetail);    
   book.save(function (err) {
     if (err) {
       cb(err, null)
@@ -91,7 +91,7 @@ function bookInstanceCreate(book, imprint, due_back, status, cb) {
   if (due_back != false) bookinstancedetail.due_back = due_back
   if (status != false) bookinstancedetail.status = status
     
-  var bookinstance = new BookInstance(bookinstancedetail);    
+  const bookinstance = new BookInstance(bookinstancedetail);    
   bookinstance.save(function (err) {
     if (err) {
       console.log('ERROR CREATING BookInstance: ' + bookinstance);
