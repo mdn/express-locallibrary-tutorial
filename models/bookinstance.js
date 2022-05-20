@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const { DateTime } = require("luxon");  //for date handling
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var BookInstanceSchema = new Schema({
+const BookInstanceSchema = new Schema({
     book: { type: Schema.ObjectId, ref: 'Book', required: true }, // Reference to the associated book.
     imprint: {type: String, required: true},
     status: {type: String, required: true, enum:['Available', 'Maintenance', 'Loaned', 'Reserved'], default:'Maintenance'},
