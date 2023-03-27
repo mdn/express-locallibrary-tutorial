@@ -4,52 +4,46 @@ var Genre = require("../models/genre");
 var BookInstance = require("../models/bookinstance");
 
 const { body, validationResult } = require("express-validator");
+const asyncHandler = require("express-async-handler");
 
 var async = require("async");
 
-exports.index = function (req, res) {
-  async.parallel(
-    {
-      book_count: function (callback) {
-        Book.countDocuments({}, callback);
-      },
-      book_instance_count: function (callback) {
-        BookInstance.countDocuments({}, callback);
-      },
-      book_instance_available_count: function (callback) {
-        BookInstance.countDocuments({ status: "Available" }, callback);
-      },
-      author_count: function (callback) {
-        Author.countDocuments({}, callback);
-      },
-      genre_count: function (callback) {
-        Genre.countDocuments({}, callback);
-      },
-    },
-    function (err, results) {
-      res.render("index", {
-        title: "Local Library Home",
-        error: err,
-        data: results,
-      });
-    }
-  );
-};
+exports.index = asyncHandler(async (req, res, next) => {
+  // Get details of books, book instances, authors and genre counts (in parallel)
+  const [
+    numBooks,
+    numBookInstances,
+    numAvailableBookInstances,
+    numAuthors,
+    numGenres,
+  ] = await Promise.all([
+    Book.countDocuments({}),
+    BookInstance.countDocuments({}),
+    BookInstance.countDocuments({ status: "Available" }),
+    Author.countDocuments({}),
+    Author.countDocuments({}),
+    //Book.find({ author: req.params.id }, "title summary").exec(),
+  ]);
+
+  res.render("index", {
+    title: "Local Library Home",
+    book_count: numBooks,
+    book_instance_count: numBookInstances,
+    book_instance_available_count: numAvailableBookInstances,
+    author_count: numAuthors,
+    genre_count: numGenres,
+  });
+});
 
 // Display list of all books.
-exports.book_list = function (req, res, next) {
-  Book.find({}, "title author")
+exports.book_list = asyncHandler(async (req, res, next) => {
+  const books = await Book.find({}, "title author")
     .sort({ title: 1 })
     .populate("author")
-    .exec(function (err, list_books) {
-      if (err) {
-        return next(err);
-      } else {
-        // Successful, so render
-        res.render("book_list", { title: "Book List", book_list: list_books });
-      }
-    });
-};
+    .exec();
+
+  res.render("book_list", { title: "Book List", book_list: books });
+});
 
 // Display detail page for a specific book.
 exports.book_detail = function (req, res, next) {
