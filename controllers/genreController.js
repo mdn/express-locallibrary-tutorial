@@ -1,6 +1,5 @@
-var Genre = require("../models/genre");
-var Book = require("../models/book");
-var async = require("async");
+const Genre = require("../models/genre");
+const Book = require("../models/book");
 
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
@@ -23,7 +22,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
   ]);
   if (genre == null) {
     // No results.
-    var err = new Error("Genre not found");
+    const err = new Error("Genre not found");
     err.status = 404;
     return next(err);
   }
@@ -54,7 +53,7 @@ exports.genre_create_post = [
     const errors = validationResult(req);
 
     // Create a genre object with escaped and trimmed data.
-    var genre = new Genre({ name: req.body.name });
+    const genre = new Genre({ name: req.body.name });
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
@@ -67,13 +66,13 @@ exports.genre_create_post = [
     } else {
       // Data from form is valid.
       // Check if Genre with same name already exists.
-      const genre = await Genre.findOne({ name: req.body.name }).exec();
-      if (genre) {
+      const genreExists = await Genre.findOne({ name: req.body.name }).exec();
+      if (genreExists) {
         // Genre exists, redirect to its detail page.
-        res.redirect(genre.url);
+        res.redirect(genreExists.url);
       } else {
         await genre.save();
-        // Genre saved. Redirect to genre detail page.
+        // New genre saved. Redirect to genre detail page.
         res.redirect(genre.url);
       }
     }
@@ -124,10 +123,10 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display Genre update form on GET.
 exports.genre_update_get = asyncHandler(async (req, res, next) => {
-  const genre = Genre.findById(req.params.id).exec();
+  const genre = await Genre.findById(req.params.id).exec();
   if (genre == null) {
     // No results.
-    var err = new Error("Genre not found");
+    const err = new Error("Genre not found");
     err.status = 404;
     return next(err);
   }
@@ -149,7 +148,7 @@ exports.genre_update_post = [
     const errors = validationResult(req);
 
     // Create a genre object with escaped and trimmed data (and the old id!)
-    var genre = new Genre({
+    const genre = new Genre({
       name: req.body.name,
       _id: req.params.id,
     });

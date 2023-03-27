@@ -1,6 +1,5 @@
-var Author = require("../models/author");
-var async = require("async");
-var Book = require("../models/book");
+const Author = require("../models/author");
+const Book = require("../models/book");
 
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
@@ -24,7 +23,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
 
   if (author == null) {
     // No results.
-    var err = new Error("Author not found");
+    const err = new Error("Author not found");
     err.status = 404;
     return next(err);
   }
@@ -73,7 +72,7 @@ exports.author_create_post = [
     const errors = validationResult(req);
 
     // Create Author object with escaped and trimmed data
-    var author = new Author({
+    const author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
@@ -148,7 +147,7 @@ exports.author_update_get = asyncHandler(async (req, res, next) => {
   const author = await Author.findById(req.params.id).exec();
   if (author == null) {
     // No results.
-    var err = new Error("Author not found");
+    const err = new Error("Author not found");
     err.status = 404;
     return next(err);
   }
@@ -188,7 +187,7 @@ exports.author_update_post = [
     const errors = validationResult(req);
 
     // Create Author object with escaped and trimmed data (and the old id!)
-    var author = new Author({
+    const author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
