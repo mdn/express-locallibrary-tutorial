@@ -6,17 +6,17 @@ const asyncHandler = require("express-async-handler");
 
 // Display list of all Authors.
 exports.author_list = asyncHandler(async (req, res, next) => {
-  const authors = await Author.find().sort({ family_name: 1 });
+  const allAuthors = await Author.find().sort({ family_name: 1 });
   res.render("author_list", {
     title: "Author List",
-    author_list: authors,
+    author_list: allAuthors,
   });
 });
 
 // Display detail page for a specific Author.
 exports.author_detail = asyncHandler(async (req, res, next) => {
   // Get details of author and all their books (in parallel)
-  const [author, authors_books] = await Promise.all([
+  const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
     Book.find({ author: req.params.id }, "title summary").exec(),
   ]);
@@ -27,11 +27,11 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
     err.status = 404;
     return next(err);
   }
-  // Successful, so render.
+
   res.render("author_detail", {
     title: "Author Detail",
     author: author,
-    author_books: authors_books,
+    author_books: allBooksByAuthor,
   });
 });
 
@@ -92,7 +92,7 @@ exports.author_create_post = [
 
       // Save author.
       await author.save();
-      // Successful - redirect to new author record.
+      // Redirect to new author record.
       res.redirect(author.url);
     }
   }),
@@ -101,7 +101,7 @@ exports.author_create_post = [
 // Display Author delete form on GET.
 exports.author_delete_get = asyncHandler(async (req, res, next) => {
   // Get details of author and all their books (in parallel)
-  const [author, authors_books] = await Promise.all([
+  const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
     Book.find({ author: req.params.id }, "title summary").exec(),
   ]);
@@ -110,29 +110,28 @@ exports.author_delete_get = asyncHandler(async (req, res, next) => {
     // No results.
     res.redirect("/catalog/authors");
   }
-  // Successful, so render.
+
   res.render("author_delete", {
     title: "Delete Author",
     author: author,
-    author_books: authors_books,
+    author_books: allBooksByAuthor,
   });
 });
 
 // Handle Author delete on POST.
 exports.author_delete_post = asyncHandler(async (req, res, next) => {
   // Get details of author and all their books (in parallel)
-  const [author, authors_books] = await Promise.all([
+  const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
     Book.find({ author: req.params.id }, "title summary").exec(),
   ]);
 
-  // Success.
-  if (authors_books.length > 0) {
+  if (allBooksByAuthor.length > 0) {
     // Author has books. Render in same way as for GET route.
     res.render("author_delete", {
       title: "Delete Author",
       author: author,
-      author_books: authors_books,
+      author_books: allBooksByAuthor,
     });
     return;
   } else {
@@ -151,7 +150,7 @@ exports.author_update_get = asyncHandler(async (req, res, next) => {
     err.status = 404;
     return next(err);
   }
-  // Success.
+
   res.render("author_form", { title: "Update Author", author: author });
 });
 

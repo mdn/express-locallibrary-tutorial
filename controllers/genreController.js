@@ -6,17 +6,17 @@ const asyncHandler = require("express-async-handler");
 
 // Display list of all Genre.
 exports.genre_list = asyncHandler(async (req, res, next) => {
-  const genres = await Genre.find().sort({ name: 1 });
+  const allGenres = await Genre.find().sort({ name: 1 });
   res.render("genre_list", {
     title: "Genre List",
-    list_genres: genres,
+    list_genres: allGenres,
   });
 });
 
 // Display detail page for a specific Genre.
 exports.genre_detail = asyncHandler(async (req, res, next) => {
   // Get details of genre and all associated books (in parallel)
-  const [genre, genre_books] = await Promise.all([
+  const [genre, booksInGenre] = await Promise.all([
     Genre.findById(req.params.id).exec(),
     Book.find({ genre: req.params.id }, "title summary").exec(),
   ]);
@@ -26,11 +26,11 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
     err.status = 404;
     return next(err);
   }
-  // Successful, so render.
+
   res.render("genre_detail", {
     title: "Genre Detail",
     genre: genre,
-    genre_books: genre_books,
+    genre_books: booksInGenre,
   });
 });
 
@@ -82,7 +82,7 @@ exports.genre_create_post = [
 // Display Genre delete form on GET.
 exports.genre_delete_get = asyncHandler(async (req, res, next) => {
   // Get details of genre and all associated books (in parallel)
-  const [genre, genre_books] = await Promise.all([
+  const [genre, booksInGenre] = await Promise.all([
     Genre.findById(req.params.id).exec(),
     Book.find({ genre: req.params.id }, "title summary").exec(),
   ]);
@@ -90,28 +90,28 @@ exports.genre_delete_get = asyncHandler(async (req, res, next) => {
     // No results.
     res.redirect("/catalog/genres");
   }
-  // Successful, so render.
+
   res.render("genre_delete", {
     title: "Delete Genre",
     genre: genre,
-    genre_books: genre_books,
+    genre_books: booksInGenre,
   });
 });
 
 // Handle Genre delete on POST.
 exports.genre_delete_post = asyncHandler(async (req, res, next) => {
   // Get details of genre and all associated books (in parallel)
-  const [genre, genre_books] = await Promise.all([
+  const [genre, booksInGenre] = await Promise.all([
     Genre.findById(req.params.id).exec(),
     Book.find({ genre: req.params.id }, "title summary").exec(),
   ]);
-  // Success
-  if (genre_books.length > 0) {
+
+  if (booksInGenre.length > 0) {
     // Genre has books. Render in same way as for GET route.
     res.render("genre_delete", {
       title: "Delete Genre",
       genre: genre,
-      genre_books: genre_books,
+      genre_books: booksInGenre,
     });
     return;
   } else {
@@ -124,13 +124,14 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
 // Display Genre update form on GET.
 exports.genre_update_get = asyncHandler(async (req, res, next) => {
   const genre = await Genre.findById(req.params.id).exec();
+
   if (genre == null) {
     // No results.
     const err = new Error("Genre not found");
     err.status = 404;
     return next(err);
   }
-  // Success.
+
   res.render("genre_form", { title: "Update Genre", genre: genre });
 });
 

@@ -58,7 +58,6 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  // Successful, so render.
   res.render("book_detail", {
     title: book.title,
     book: book,
@@ -148,7 +147,6 @@ exports.book_create_post = [
 
       await book.save();
       book.save(function (err) {
-        // Successful - redirect to new book record.
         res.redirect(book.url);
       });
     }
@@ -167,7 +165,6 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
     res.redirect("/catalog/books");
   }
 
-  // Successful, so render.
   res.render("book_delete", {
     title: "Delete Book",
     book: book,
@@ -188,7 +185,7 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
     // No results.
     res.redirect("/catalog/books");
   }
-  // Success
+
   if (bookInstances.length > 0) {
     // Book has book_instances. Render in same way as for GET route.
     res.render("book_delete", {
@@ -220,7 +217,6 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  // Success.
   // Mark our selected genres as checked.
   for (let all_g_iter = 0; all_g_iter < allGenres.length; all_g_iter++) {
     for (let book_g_iter = 0; book_g_iter < book.genre.length; book_g_iter++) {
@@ -309,7 +305,7 @@ exports.book_update_post = [
     } else {
       // Data from form is valid. Update the record.
       const thebook = await Book.findByIdAndUpdate(req.params.id, book, {});
-      // Successful - redirect to book detail page.
+      // Redirect to book detail page.
       res.redirect(thebook.url);
     }
   }),
