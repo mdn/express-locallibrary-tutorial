@@ -15,11 +15,11 @@ exports.index = asyncHandler(async (req, res, next) => {
     numAuthors,
     numGenres,
   ] = await Promise.all([
-    Book.countDocuments({}),
-    BookInstance.countDocuments({}),
-    BookInstance.countDocuments({ status: "Available" }),
-    Author.countDocuments({}),
-    Author.countDocuments({}),
+    Book.countDocuments({}).exec(),
+    BookInstance.countDocuments({}).exec(),
+    BookInstance.countDocuments({ status: "Available" }).exec(),
+    Author.countDocuments({}).exec(),
+    Author.countDocuments({}).exec(),
   ]);
 
   res.render("index", {
@@ -68,8 +68,8 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
 exports.book_create_get = asyncHandler(async (req, res, next) => {
   // Get all authors and genres, which we can use for adding to our book.
   const [allAuthors, allGenres] = await Promise.all([
-    Author.find(),
-    Genre.find(),
+    Author.find().exec(),
+    Genre.find().exec(),
   ]);
 
   res.render("book_form", {
@@ -125,8 +125,8 @@ exports.book_create_post = [
 
       // Get all authors and genres for form.
       const [allAuthors, allGenres] = await Promise.all([
-        Author.find(),
-        Genre.find(),
+        Author.find().exec(),
+        Genre.find().exec(),
       ]);
       // Mark our selected genres as checked.
       for (let i = 0; i < allGenres.length; i++) {
@@ -205,8 +205,8 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
   // Get book, authors and genres for form.
   const [book, allAuthors, allGenres] = await Promise.all([
     Book.findById(req.params.id).populate("author").populate("genre").exec(),
-    Author.find(),
-    Genre.find(),
+    Author.find().exec(),
+    Genre.find().exec(),
   ]);
 
   if (book == null) {
@@ -283,8 +283,8 @@ exports.book_update_post = [
 
       // Get all authors and genres for form
       const [allAuthors, allGenres] = await Promise.all([
-        Author.find(),
-        Genre.find(),
+        Author.find().exec(),
+        Genre.find().exec(),
       ]);
 
       // Mark our selected genres as checked.
