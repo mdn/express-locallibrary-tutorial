@@ -21,7 +21,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
     Book.find({ author: req.params.id }, "title summary").exec(),
   ]);
 
-  if (author == null) {
+  if (author === null) {
     // No results.
     const err = new Error("Author not found");
     err.status = 404;
@@ -106,7 +106,7 @@ exports.author_delete_get = asyncHandler(async (req, res, next) => {
     Book.find({ author: req.params.id }, "title summary").exec(),
   ]);
 
-  if (author == null) {
+  if (author === null) {
     // No results.
     res.redirect("/catalog/authors");
   }
@@ -144,7 +144,7 @@ exports.author_delete_post = asyncHandler(async (req, res, next) => {
 // Display Author update form on GET.
 exports.author_update_get = asyncHandler(async (req, res, next) => {
   const author = await Author.findById(req.params.id).exec();
-  if (author == null) {
+  if (author === null) {
     // No results.
     const err = new Error("Author not found");
     err.status = 404;

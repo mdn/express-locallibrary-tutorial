@@ -50,7 +50,7 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
     BookInstance.find({ book: req.params.id }).exec(),
   ]);
 
-  if (book == null) {
+  if (book === null) {
     // No results.
     const err = new Error("Book not found");
     err.status = 404;
@@ -159,7 +159,7 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
     BookInstance.find({ book: req.params.id }).exec(),
   ]);
 
-  if (book == null) {
+  if (book === null) {
     // No results.
     res.redirect("/catalog/books");
   }
@@ -180,7 +180,7 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
     BookInstance.find({ book: req.params.id }).exec(),
   ]);
 
-  if (book == null) {
+  if (book === null) {
     // No results.
     res.redirect("/catalog/books");
   }
@@ -209,7 +209,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
     Genre.find().exec(),
   ]);
 
-  if (book == null) {
+  if (book === null) {
     // No results.
     const err = new Error("Book not found");
     err.status = 404;

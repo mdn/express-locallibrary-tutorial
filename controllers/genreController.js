@@ -20,7 +20,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
     Genre.findById(req.params.id).exec(),
     Book.find({ genre: req.params.id }, "title summary").exec(),
   ]);
-  if (genre == null) {
+  if (genre === null) {
     // No results.
     const err = new Error("Genre not found");
     err.status = 404;
@@ -86,7 +86,7 @@ exports.genre_delete_get = asyncHandler(async (req, res, next) => {
     Genre.findById(req.params.id).exec(),
     Book.find({ genre: req.params.id }, "title summary").exec(),
   ]);
-  if (genre == null) {
+  if (genre === null) {
     // No results.
     res.redirect("/catalog/genres");
   }
@@ -125,7 +125,7 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
 exports.genre_update_get = asyncHandler(async (req, res, next) => {
   const genre = await Genre.findById(req.params.id).exec();
 
-  if (genre == null) {
+  if (genre === null) {
     // No results.
     const err = new Error("Genre not found");
     err.status = 404;
