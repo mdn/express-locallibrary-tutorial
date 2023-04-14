@@ -36,7 +36,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
 });
 
 // Display Author create form on GET.
-exports.author_create_get = function (req, res, next) {
+exports.author_create_get = (req, res, next) => {
   res.render("author_form", { title: "Create Author" });
 };
 
