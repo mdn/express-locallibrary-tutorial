@@ -128,10 +128,11 @@ exports.book_create_post = [
         Author.find().exec(),
         Genre.find().exec(),
       ]);
+
       // Mark our selected genres as checked.
-      for (let i = 0; i < allGenres.length; i++) {
-        if (book.genre.indexOf(allGenres[i]._id) > -1) {
-          allGenres[i].checked = "true";
+      for (const genre of allGenres) {
+        if (book.genre.indexOf(genre._id) > -1) {
+          genre.checked = "true";
         }
       }
       res.render("book_form", {
@@ -143,11 +144,8 @@ exports.book_create_post = [
       });
     } else {
       // Data from form is valid. Save book.
-
       await book.save();
-      book.save(function (err) {
-        res.redirect(book.url);
-      });
+      res.redirect(book.url);
     }
   }),
 ];
@@ -217,13 +215,10 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
   }
 
   // Mark our selected genres as checked.
-  for (let all_g_iter = 0; all_g_iter < allGenres.length; all_g_iter++) {
-    for (let book_g_iter = 0; book_g_iter < book.genre.length; book_g_iter++) {
-      if (
-        allGenres[all_g_iter]._id.toString() ===
-        book.genre[book_g_iter]._id.toString()
-      ) {
-        allGenres[all_g_iter].checked = "true";
+  for (const genre of allGenres) {
+    for (const book_g of book.genre) {
+      if (genre._id.toString() === book_g._id.toString()) {
+        genre.checked = "true";
       }
     }
   }
@@ -288,9 +283,9 @@ exports.book_update_post = [
       ]);
 
       // Mark our selected genres as checked.
-      for (let i = 0; i < allGenres.length; i++) {
-        if (book.genre.indexOf(allGenres[i]._id) > -1) {
-          allGenres[i].checked = "true";
+      for (const genre of allGenres) {
+        if (book.genre.indexOf(genre._id) > -1) {
+          genre.checked = "true";
         }
       }
       res.render("book_form", {
