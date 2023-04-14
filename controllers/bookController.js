@@ -236,8 +236,11 @@ exports.book_update_post = [
   // Convert the genre to an array.
   (req, res, next) => {
     if (!(req.body.genre instanceof Array)) {
-      if (typeof req.body.genre === "undefined") req.body.genre = [];
-      else req.body.genre = new Array(req.body.genre);
+      if (typeof req.body.genre === "undefined") {
+        req.body.genre = [];
+      } else {
+        req.body.genre = new Array(req.body.genre);
+      }
     }
     next();
   },
