@@ -156,7 +156,7 @@ exports.author_update_get = asyncHandler(async (req, res, next) => {
 
 // Handle Author update on POST.
 exports.author_update_post = [
-  // Validate and santize fields.
+  // Validate and sanitize fields.
   body("first_name")
     .trim()
     .isLength({ min: 1 })
