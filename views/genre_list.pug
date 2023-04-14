@@ -2,10 +2,10 @@ extends layout
 
 block content
   h1= title
-  
+
   ul
   each val in list_genres
-    li 
+    li
       a(href=val.url) #{val.name}
 
   else
