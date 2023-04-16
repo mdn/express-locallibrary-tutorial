@@ -1,58 +1,42 @@
-var Author = require("../models/author");
-var async = require("async");
-var Book = require("../models/book");
+const Author = require("../models/author");
+const Book = require("../models/book");
 
 const { body, validationResult } = require("express-validator");
+const asyncHandler = require("express-async-handler");
 
 // Display list of all Authors.
-exports.author_list = function (req, res, next) {
-  Author.find()
-    .sort([["family_name", "ascending"]])
-    .exec(function (err, list_authors) {
-      if (err) {
-        return next(err);
-      }
-      // Successful, so render.
-      res.render("author_list", {
-        title: "Author List",
-        author_list: list_authors,
-      });
-    });
-};
+exports.author_list = asyncHandler(async (req, res, next) => {
+  const allAuthors = await Author.find().sort({ family_name: 1 }).exec();
+  res.render("author_list", {
+    title: "Author List",
+    author_list: allAuthors,
+  });
+});
 
 // Display detail page for a specific Author.
-exports.author_detail = function (req, res, next) {
-  async.parallel(
-    {
-      author: function (callback) {
-        Author.findById(req.params.id).exec(callback);
-      },
-      authors_books: function (callback) {
-        Book.find({ author: req.params.id }, "title summary").exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      } // Error in API usage.
-      if (results.author == null) {
-        // No results.
-        var err = new Error("Author not found");
-        err.status = 404;
-        return next(err);
-      }
-      // Successful, so render.
-      res.render("author_detail", {
-        title: "Author Detail",
-        author: results.author,
-        author_books: results.authors_books,
-      });
-    }
-  );
-};
+exports.author_detail = asyncHandler(async (req, res, next) => {
+  // Get details of author and all their books (in parallel)
+  const [author, allBooksByAuthor] = await Promise.all([
+    Author.findById(req.params.id).exec(),
+    Book.find({ author: req.params.id }, "title summary").exec(),
+  ]);
+
+  if (author === null) {
+    // No results.
+    const err = new Error("Author not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("author_detail", {
+    title: "Author Detail",
+    author: author,
+    author_books: allBooksByAuthor,
+  });
+});
 
 // Display Author create form on GET.
-exports.author_create_get = function (req, res, next) {
+exports.author_create_get = (req, res, next) => {
   res.render("author_form", { title: "Create Author" });
 };
 
@@ -83,12 +67,12 @@ exports.author_create_post = [
     .toDate(),
 
   // Process request after validation and sanitization.
-  (req, res, next) => {
+  asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
     // Create Author object with escaped and trimmed data
-    var author = new Author({
+    const author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
@@ -107,104 +91,72 @@ exports.author_create_post = [
       // Data from form is valid.
 
       // Save author.
-      author.save(function (err) {
-        if (err) {
-          return next(err);
-        }
-        // Successful - redirect to new author record.
-        res.redirect(author.url);
-      });
+      await author.save();
+      // Redirect to new author record.
+      res.redirect(author.url);
     }
-  },
+  }),
 ];
 
 // Display Author delete form on GET.
-exports.author_delete_get = function (req, res, next) {
-  async.parallel(
-    {
-      author: function (callback) {
-        Author.findById(req.params.id).exec(callback);
-      },
-      authors_books: function (callback) {
-        Book.find({ author: req.params.id }).exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results.author == null) {
-        // No results.
-        res.redirect("/catalog/authors");
-      }
-      // Successful, so render.
-      res.render("author_delete", {
-        title: "Delete Author",
-        author: results.author,
-        author_books: results.authors_books,
-      });
-    }
-  );
-};
+exports.author_delete_get = asyncHandler(async (req, res, next) => {
+  // Get details of author and all their books (in parallel)
+  const [author, allBooksByAuthor] = await Promise.all([
+    Author.findById(req.params.id).exec(),
+    Book.find({ author: req.params.id }, "title summary").exec(),
+  ]);
+
+  if (author === null) {
+    // No results.
+    res.redirect("/catalog/authors");
+  }
+
+  res.render("author_delete", {
+    title: "Delete Author",
+    author: author,
+    author_books: allBooksByAuthor,
+  });
+});
 
 // Handle Author delete on POST.
-exports.author_delete_post = function (req, res, next) {
-  async.parallel(
-    {
-      author: function (callback) {
-        Author.findById(req.body.authorid).exec(callback);
-      },
-      authors_books: function (callback) {
-        Book.find({ author: req.body.authorid }).exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      // Success.
-      if (results.authors_books.length > 0) {
-        // Author has books. Render in same way as for GET route.
-        res.render("author_delete", {
-          title: "Delete Author",
-          author: results.author,
-          author_books: results.authors_books,
-        });
-        return;
-      } else {
-        // Author has no books. Delete object and redirect to the list of authors.
-        Author.findByIdAndRemove(req.body.authorid, function deleteAuthor(err) {
-          if (err) {
-            return next(err);
-          }
-          // Success - go to author list.
-          res.redirect("/catalog/authors");
-        });
-      }
-    }
-  );
-};
+exports.author_delete_post = asyncHandler(async (req, res, next) => {
+  // Get details of author and all their books (in parallel)
+  const [author, allBooksByAuthor] = await Promise.all([
+    Author.findById(req.params.id).exec(),
+    Book.find({ author: req.params.id }, "title summary").exec(),
+  ]);
+
+  if (allBooksByAuthor.length > 0) {
+    // Author has books. Render in same way as for GET route.
+    res.render("author_delete", {
+      title: "Delete Author",
+      author: author,
+      author_books: allBooksByAuthor,
+    });
+    return;
+  } else {
+    // Author has no books. Delete object and redirect to the list of authors.
+    await Author.findByIdAndRemove(req.body.authorid);
+    res.redirect("/catalog/authors");
+  }
+});
 
 // Display Author update form on GET.
-exports.author_update_get = function (req, res, next) {
-  Author.findById(req.params.id, function (err, author) {
-    if (err) {
-      return next(err);
-    }
-    if (author == null) {
-      // No results.
-      var err = new Error("Author not found");
-      err.status = 404;
-      return next(err);
-    }
-    // Success.
-    res.render("author_form", { title: "Update Author", author: author });
-  });
-};
+exports.author_update_get = asyncHandler(async (req, res, next) => {
+  const author = await Author.findById(req.params.id).exec();
+  if (author === null) {
+    // No results.
+    const err = new Error("Author not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("author_form", { title: "Update Author", author: author });
+});
 
 // Handle Author update on POST.
 exports.author_update_post = [
-  // Validate and santize fields.
+  // Validate and sanitize fields.
   body("first_name")
     .trim()
     .isLength({ min: 1 })
@@ -229,12 +181,12 @@ exports.author_update_post = [
     .toDate(),
 
   // Process request after validation and sanitization.
-  (req, res, next) => {
+  asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
     // Create Author object with escaped and trimmed data (and the old id!)
-    var author = new Author({
+    const author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
@@ -252,18 +204,8 @@ exports.author_update_post = [
       return;
     } else {
       // Data from form is valid. Update the record.
-      Author.findByIdAndUpdate(
-        req.params.id,
-        author,
-        {},
-        function (err, theauthor) {
-          if (err) {
-            return next(err);
-          }
-          // Successful - redirect to genre detail page.
-          res.redirect(theauthor.url);
-        }
-      );
+      await Author.findByIdAndUpdate(req.params.id, author);
+      res.redirect(author.url);
     }
-  },
+  }),
 ];

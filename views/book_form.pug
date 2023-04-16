@@ -21,7 +21,7 @@ block content
       input#summary.form-control(type='textarea', placeholder='Summary' name='summary' value=(undefined===book ? '' : book.summary) required='true')
     div.form-group
       label(for='isbn') ISBN:
-      input#isbn.form-control(type='text', placeholder='ISBN13' name='isbn' value=(undefined===book ? '' : book.isbn) required='true') 
+      input#isbn.form-control(type='text', placeholder='ISBN13' name='isbn' value=(undefined===book ? '' : book.isbn) required='true')
     div.form-group
       label Genre:
       div
@@ -31,7 +31,7 @@ block content
             label(for=genre._id) #{genre.name}
     button.btn.btn-primary(type='submit') Submit
 
-  if errors 
+  if errors
     ul
       for error in errors
         li!= error.msg

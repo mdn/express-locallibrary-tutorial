@@ -1,9 +1,9 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const { DateTime } = require("luxon"); // for date handling
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var AuthorSchema = new Schema({
+const AuthorSchema = new Schema({
   first_name: { type: String, required: true, maxLength: 100 },
   family_name: { type: String, required: true, maxLength: 100 },
   date_of_birth: { type: Date },
@@ -21,7 +21,7 @@ AuthorSchema.virtual("url").get(function () {
 });
 
 AuthorSchema.virtual("lifespan").get(function () {
-  var lifetime_string = "";
+  let lifetime_string = "";
   if (this.date_of_birth) {
     lifetime_string = DateTime.fromJSDate(this.date_of_birth).toLocaleString(
       DateTime.DATE_MED
