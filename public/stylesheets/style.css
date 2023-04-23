@@ -1,5 +1,13 @@
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .sidebar-nav {
-  margin-top: 20px;
+  margin-top: 1.25rem;
   padding: 0;
   list-style: none;
 }
