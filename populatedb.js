@@ -44,7 +44,7 @@ async function genreCreate(name) {
 }
 
 async function authorCreate(first_name, family_name, d_birth, d_death) {
-  authordetail = { first_name: first_name, family_name: family_name };
+  const authordetail = { first_name: first_name, family_name: family_name };
   if (d_birth != false) authordetail.date_of_birth = d_birth;
   if (d_death != false) authordetail.date_of_death = d_death;
 
@@ -56,7 +56,7 @@ async function authorCreate(first_name, family_name, d_birth, d_death) {
 }
 
 async function bookCreate(title, summary, isbn, author, genre) {
-  bookdetail = {
+  const bookdetail = {
     title: title,
     summary: summary,
     author: author,
@@ -71,7 +71,7 @@ async function bookCreate(title, summary, isbn, author, genre) {
 }
 
 async function bookInstanceCreate(book, imprint, due_back, status) {
-  bookinstancedetail = {
+  const bookinstancedetail = {
     book: book,
     imprint: imprint,
   };
