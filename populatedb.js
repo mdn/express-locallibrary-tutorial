@@ -18,7 +18,7 @@ const books = [];
 const bookinstances = [];
 
 const mongoose = require("mongoose");
-mongoose.set("strictQuery", false); // Prepare for Mongoose 7
+mongoose.set("strictQuery", false);
 
 const mongoDB = userArgs[0];
 
