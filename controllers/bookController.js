@@ -193,7 +193,7 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
     return;
   } else {
     // Book has no BookInstance objects. Delete object and redirect to the list of books.
-    await Book.findByIdAndRemove(req.body.id);
+    await Book.findByIdAndDelete(req.body.id);
     res.redirect("/catalog/books");
   }
 });
