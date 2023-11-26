@@ -35,7 +35,7 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
 
 // Display BookInstance create form on GET.
 exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
-  const allBooks = await Book.find({}, "title").exec();
+  const allBooks = await Book.find({}, "title").sort({ title: 1 }).exec();
 
   res.render("bookinstance_form", {
     title: "Create BookInstance",
@@ -73,7 +73,7 @@ exports.bookinstance_create_post = [
     if (!errors.isEmpty()) {
       // There are errors.
       // Render form again with sanitized values and error messages.
-      const allBooks = await Book.find({}, "title").exec();
+      const allBooks = await Book.find({}, "title").sort({ title: 1 }).exec();
 
       res.render("bookinstance_form", {
         title: "Create BookInstance",

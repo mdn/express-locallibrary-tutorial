@@ -68,8 +68,8 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
 exports.book_create_get = asyncHandler(async (req, res, next) => {
   // Get all authors and genres, which we can use for adding to our book.
   const [allAuthors, allGenres] = await Promise.all([
-    Author.find().exec(),
-    Genre.find().exec(),
+    Author.find().sort({ family_name: 1 }).exec(),
+    Genre.find().sort({ name: 1 }).exec(),
   ]);
 
   res.render("book_form", {
@@ -125,8 +125,8 @@ exports.book_create_post = [
 
       // Get all authors and genres for form.
       const [allAuthors, allGenres] = await Promise.all([
-        Author.find().exec(),
-        Genre.find().exec(),
+        Author.find().sort({ family_name: 1 }).exec(),
+        Genre.find().sort({ name: 1 }).exec(),
       ]);
 
       // Mark our selected genres as checked.
@@ -203,8 +203,8 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
   // Get book, authors and genres for form.
   const [book, allAuthors, allGenres] = await Promise.all([
     Book.findById(req.params.id).populate("author").populate("genre").exec(),
-    Author.find().exec(),
-    Genre.find().exec(),
+    Author.find().sort({ family_name: 1 }).exec(),
+    Genre.find().sort({ name: 1 }).exec(),
   ]);
 
   if (book === null) {
@@ -278,8 +278,8 @@ exports.book_update_post = [
 
       // Get all authors and genres for form
       const [allAuthors, allGenres] = await Promise.all([
-        Author.find().exec(),
-        Genre.find().exec(),
+        Author.find().sort({ family_name: 1 }).exec(),
+        Genre.find().sort({ name: 1 }).exec(),
       ]);
 
       // Mark our selected genres as checked.
