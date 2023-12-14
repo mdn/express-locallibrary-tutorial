@@ -4,9 +4,9 @@ block content
   h1= title
 
   ul
-  each val in list_genres
-    li
-      a(href=val.url) #{val.name}
+    each val in list_genres
+      li
+        a(href=val.url) #{val.name}
 
-  else
-    li There are no genre.
+    else
+      li There are no genre.

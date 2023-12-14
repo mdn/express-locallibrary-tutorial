@@ -13,10 +13,10 @@ block content
       h4 Books
 
       dl
-      each book in genre_books
-        dt
-          a(href=book.url) #{book.title}
-        dd #{book.summary}
+        each book in genre_books
+          dt
+            a(href=book.url) #{book.title}
+          dd #{book.summary}
 
   else
     p Do you really want to delete this Genre?
