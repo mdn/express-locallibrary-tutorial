@@ -11,7 +11,7 @@ block content
     each val, index in book.genre
       a(href=val.url) #{val.name}
       if index < book.genre.length - 1
-        |,
+        |,&nbsp;
 
   div(style='margin-left:20px;margin-top:20px')
     h4 Copies

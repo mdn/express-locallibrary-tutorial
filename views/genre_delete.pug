@@ -21,8 +21,8 @@ block content
   else
     p Do you really want to delete this Genre?
 
-    form(method='POST' action='')
+    form(method='POST')
       div.form-group
-        input#id.form-control(type='hidden',name='id', required='true', value=genre._id )
+        input#id.form-control(type='hidden', name='id', value=genre._id )
 
       button.btn.btn-primary(type='submit') Delete

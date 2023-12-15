@@ -4,14 +4,15 @@ block content
 
   h1 #{title}: #{book.title}
 
-  p #[strong Author:]
+  p #[strong Author: ]
     a(href=book.author.url) #{book.author.name}
   p #[strong Summary:] #{book.summary}
   p #[strong ISBN:] #{book.isbn}
-  p #[strong Genre:]
-    each val in book.genre
+  p #[strong Genre: ]
+    each val, index in book.genre
       a(href=val.url) #{val.name}
-      |,
+      if index < book.genre.length - 1
+        |,&nbsp;
 
   hr
 
@@ -40,8 +41,8 @@ block content
   else
     p Do you really want to delete this Book?
 
-    form(method='POST' action='')
+    form(method='POST')
       div.form-group
-        input#id.form-control(type='hidden',name='id', required='true', value=book._id )
+        input#id.form-control(type='hidden',name='id', value=book._id )
 
       button.btn.btn-primary(type='submit') Delete
