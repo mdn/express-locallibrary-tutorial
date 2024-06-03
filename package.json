@@ -16,7 +16,7 @@
     "debug": "~4.3.5",
     "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
-    "express-rate-limit": "^7.2.0",
+    "express-rate-limit": "^7.3.0",
     "express-validator": "^7.1.0",
     "helmet": "^7.1.0",
     "http-errors": "~2.0.0",
