@@ -23,7 +23,7 @@
     "luxon": "^3.4.4",
     "mongoose": "^8.4.1",
     "morgan": "^1.10.0",
-    "pug": "2.0.0-beta11"
+    "pug": "3.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.3"
