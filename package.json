@@ -21,7 +21,7 @@
     "helmet": "^7.1.0",
     "http-errors": "^2.0.0",
     "luxon": "^3.4.4",
-    "mongoose": "^8.4.1",
+    "mongoose": "^8.4.4",
     "morgan": "^1.10.0",
     "pug": "^3.0.3"
   },
