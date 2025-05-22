@@ -52,7 +52,8 @@ app.use(
   })
 );
 
-app.use(compression()); // Compress all routes
+app.use(compression()); 
+// Compress all routes
 
 app.use(express.static(path.join(__dirname, "public")));
 
