@@ -191,11 +191,11 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
       book_instances: bookInstances,
     });
     return;
-  } else {
-    // Book has no BookInstance objects. Delete object and redirect to the list of books.
-    await Book.findByIdAndDelete(req.body.id);
-    res.redirect("/catalog/books");
   }
+
+  // Book has no BookInstance objects. Delete object and redirect to the list of books.
+  await Book.findByIdAndDelete(req.body.id);
+  res.redirect("/catalog/books");
 });
 
 // Display book update form on GET.
@@ -292,11 +292,11 @@ exports.book_update_post = [
         errors: errors.array(),
       });
       return;
-    } else {
-      // Data from form is valid. Update the record.
-      const thebook = await Book.findByIdAndUpdate(req.params.id, book, {});
-      // Redirect to book detail page.
-      res.redirect(thebook.url);
     }
+
+    // Data from form is valid. Update the record.
+    const thebook = await Book.findByIdAndUpdate(req.params.id, book, {});
+    // Redirect to book detail page.
+    res.redirect(thebook.url);
   }),
 ];

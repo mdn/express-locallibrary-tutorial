@@ -87,14 +87,12 @@ exports.author_create_post = [
         errors: errors.array(),
       });
       return;
-    } else {
-      // Data from form is valid.
-
-      // Save author.
-      await author.save();
-      // Redirect to new author record.
-      res.redirect(author.url);
     }
+
+    // Data from form is valid.
+    await author.save();
+    // Redirect to new author record.
+    res.redirect(author.url);
   }),
 ];
 
@@ -134,11 +132,11 @@ exports.author_delete_post = asyncHandler(async (req, res, next) => {
       author_books: allBooksByAuthor,
     });
     return;
-  } else {
-    // Author has no books. Delete object and redirect to the list of authors.
-    await Author.findByIdAndDelete(req.body.authorid);
-    res.redirect("/catalog/authors");
   }
+
+  // Author has no books. Delete object and redirect to the list of authors.
+  await Author.findByIdAndDelete(req.body.authorid);
+  res.redirect("/catalog/authors");
 });
 
 // Display Author update form on GET.
@@ -202,10 +200,10 @@ exports.author_update_post = [
         errors: errors.array(),
       });
       return;
-    } else {
-      // Data from form is valid. Update the record.
-      await Author.findByIdAndUpdate(req.params.id, author);
-      res.redirect(author.url);
     }
+
+    // Data from form is valid. Update the record.
+    await Author.findByIdAndUpdate(req.params.id, author);
+    res.redirect(author.url);
   }),
 ];

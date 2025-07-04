@@ -63,20 +63,20 @@ exports.genre_create_post = [
         errors: errors.array(),
       });
       return;
+    }
+
+    // Data from form is valid.
+    // Check if Genre with same name (case insensitive) already exists.
+    const genreExists = await Genre.findOne({ name: req.body.name })
+      .collation({ locale: "en", strength: 2 })
+      .exec();
+    if (genreExists) {
+      // Genre exists, redirect to its detail page.
+      res.redirect(genreExists.url);
     } else {
-      // Data from form is valid.
-      // Check if Genre with same name (case insensitive) already exists.
-      const genreExists = await Genre.findOne({ name: req.body.name })
-        .collation({ locale: "en", strength: 2 })
-        .exec();
-      if (genreExists) {
-        // Genre exists, redirect to its detail page.
-        res.redirect(genreExists.url);
-      } else {
-        await genre.save();
-        // New genre saved. Redirect to genre detail page.
-        res.redirect(genre.url);
-      }
+      await genre.save();
+      // New genre saved. Redirect to genre detail page.
+      res.redirect(genre.url);
     }
   }),
 ];
@@ -116,11 +116,11 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
       genre_books: booksInGenre,
     });
     return;
-  } else {
-    // Genre has no books. Delete object and redirect to the list of genres.
-    await Genre.findByIdAndDelete(req.body.id);
-    res.redirect("/catalog/genres");
   }
+
+  // Genre has no books. Delete object and redirect to the list of genres.
+  await Genre.findByIdAndDelete(req.body.id);
+  res.redirect("/catalog/genres");
 });
 
 // Display Genre update form on GET.
@@ -164,10 +164,10 @@ exports.genre_update_post = [
         errors: errors.array(),
       });
       return;
-    } else {
-      // Data from form is valid. Update the record.
-      await Genre.findByIdAndUpdate(req.params.id, genre);
-      res.redirect(genre.url);
     }
+
+    // Data from form is valid. Update the record.
+    await Genre.findByIdAndUpdate(req.params.id, genre);
+    res.redirect(genre.url);
   }),
 ];
