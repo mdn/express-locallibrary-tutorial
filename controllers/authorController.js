@@ -30,7 +30,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
 
   res.render("author_detail", {
     title: "Author Detail",
-    author: author,
+    author,
     author_books: allBooksByAuthor,
   });
 });
@@ -83,18 +83,16 @@ exports.author_create_post = [
       // There are errors. Render form again with sanitized values/errors messages.
       res.render("author_form", {
         title: "Create Author",
-        author: author,
+        author,
         errors: errors.array(),
       });
       return;
-    } else {
-      // Data from form is valid.
-
-      // Save author.
-      await author.save();
-      // Redirect to new author record.
-      res.redirect(author.url);
     }
+
+    // Data from form is valid.
+    await author.save();
+    // Redirect to new author record.
+    res.redirect(author.url);
   }),
 ];
 
@@ -113,7 +111,7 @@ exports.author_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("author_delete", {
     title: "Delete Author",
-    author: author,
+    author,
     author_books: allBooksByAuthor,
   });
 });
@@ -130,15 +128,15 @@ exports.author_delete_post = asyncHandler(async (req, res, next) => {
     // Author has books. Render in same way as for GET route.
     res.render("author_delete", {
       title: "Delete Author",
-      author: author,
+      author,
       author_books: allBooksByAuthor,
     });
     return;
-  } else {
-    // Author has no books. Delete object and redirect to the list of authors.
-    await Author.findByIdAndDelete(req.body.authorid);
-    res.redirect("/catalog/authors");
   }
+
+  // Author has no books. Delete object and redirect to the list of authors.
+  await Author.findByIdAndDelete(req.body.authorid);
+  res.redirect("/catalog/authors");
 });
 
 // Display Author update form on GET.
@@ -151,7 +149,7 @@ exports.author_update_get = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  res.render("author_form", { title: "Update Author", author: author });
+  res.render("author_form", { title: "Update Author", author });
 });
 
 // Handle Author update on POST.
@@ -198,14 +196,14 @@ exports.author_update_post = [
       // There are errors. Render the form again with sanitized values and error messages.
       res.render("author_form", {
         title: "Update Author",
-        author: author,
+        author,
         errors: errors.array(),
       });
       return;
-    } else {
-      // Data from form is valid. Update the record.
-      await Author.findByIdAndUpdate(req.params.id, author);
-      res.redirect(author.url);
     }
+
+    // Data from form is valid. Update the record.
+    await Author.findByIdAndUpdate(req.params.id, author);
+    res.redirect(author.url);
   }),
 ];

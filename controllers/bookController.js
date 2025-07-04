@@ -59,7 +59,7 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
 
   res.render("book_detail", {
     title: book.title,
-    book: book,
+    book,
     book_instances: bookInstances,
   });
 });
@@ -139,7 +139,7 @@ exports.book_create_post = [
         title: "Create Book",
         authors: allAuthors,
         genres: allGenres,
-        book: book,
+        book,
         errors: errors.array(),
       });
     } else {
@@ -164,7 +164,7 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("book_delete", {
     title: "Delete Book",
-    book: book,
+    book,
     book_instances: bookInstances,
   });
 });
@@ -187,15 +187,15 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
     // Book has book_instances. Render in same way as for GET route.
     res.render("book_delete", {
       title: "Delete Book",
-      book: book,
+      book,
       book_instances: bookInstances,
     });
     return;
-  } else {
-    // Book has no BookInstance objects. Delete object and redirect to the list of books.
-    await Book.findByIdAndDelete(req.body.id);
-    res.redirect("/catalog/books");
   }
+
+  // Book has no BookInstance objects. Delete object and redirect to the list of books.
+  await Book.findByIdAndDelete(req.body.id);
+  res.redirect("/catalog/books");
 });
 
 // Display book update form on GET.
@@ -223,7 +223,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
     title: "Update Book",
     authors: allAuthors,
     genres: allGenres,
-    book: book,
+    book,
   });
 });
 
@@ -288,15 +288,15 @@ exports.book_update_post = [
         title: "Update Book",
         authors: allAuthors,
         genres: allGenres,
-        book: book,
+        book,
         errors: errors.array(),
       });
       return;
-    } else {
-      // Data from form is valid. Update the record.
-      const thebook = await Book.findByIdAndUpdate(req.params.id, book, {});
-      // Redirect to book detail page.
-      res.redirect(thebook.url);
     }
+
+    // Data from form is valid. Update the record.
+    const thebook = await Book.findByIdAndUpdate(req.params.id, book, {});
+    // Redirect to book detail page.
+    res.redirect(thebook.url);
   }),
 ];

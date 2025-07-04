@@ -24,6 +24,7 @@ app.use(limiter);
 
 // Set up mongoose connection
 const mongoose = require("mongoose");
+
 mongoose.set("strictQuery", false);
 
 const dev_db_url =

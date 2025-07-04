@@ -29,7 +29,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
 
   res.render("genre_detail", {
     title: "Genre Detail",
-    genre: genre,
+    genre,
     genre_books: booksInGenre,
   });
 });
@@ -59,24 +59,24 @@ exports.genre_create_post = [
       // There are errors. Render the form again with sanitized values/error messages.
       res.render("genre_form", {
         title: "Create Genre",
-        genre: genre,
+        genre,
         errors: errors.array(),
       });
       return;
+    }
+
+    // Data from form is valid.
+    // Check if Genre with same name (case insensitive) already exists.
+    const genreExists = await Genre.findOne({ name: req.body.name })
+      .collation({ locale: "en", strength: 2 })
+      .exec();
+    if (genreExists) {
+      // Genre exists, redirect to its detail page.
+      res.redirect(genreExists.url);
     } else {
-      // Data from form is valid.
-      // Check if Genre with same name (case insensitive) already exists.
-      const genreExists = await Genre.findOne({ name: req.body.name })
-        .collation({ locale: "en", strength: 2 })
-        .exec();
-      if (genreExists) {
-        // Genre exists, redirect to its detail page.
-        res.redirect(genreExists.url);
-      } else {
-        await genre.save();
-        // New genre saved. Redirect to genre detail page.
-        res.redirect(genre.url);
-      }
+      await genre.save();
+      // New genre saved. Redirect to genre detail page.
+      res.redirect(genre.url);
     }
   }),
 ];
@@ -95,7 +95,7 @@ exports.genre_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("genre_delete", {
     title: "Delete Genre",
-    genre: genre,
+    genre,
     genre_books: booksInGenre,
   });
 });
@@ -112,15 +112,15 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
     // Genre has books. Render in same way as for GET route.
     res.render("genre_delete", {
       title: "Delete Genre",
-      genre: genre,
+      genre,
       genre_books: booksInGenre,
     });
     return;
-  } else {
-    // Genre has no books. Delete object and redirect to the list of genres.
-    await Genre.findByIdAndDelete(req.body.id);
-    res.redirect("/catalog/genres");
   }
+
+  // Genre has no books. Delete object and redirect to the list of genres.
+  await Genre.findByIdAndDelete(req.body.id);
+  res.redirect("/catalog/genres");
 });
 
 // Display Genre update form on GET.
@@ -134,7 +134,7 @@ exports.genre_update_get = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  res.render("genre_form", { title: "Update Genre", genre: genre });
+  res.render("genre_form", { title: "Update Genre", genre });
 });
 
 // Handle Genre update on POST.
@@ -160,14 +160,14 @@ exports.genre_update_post = [
       // There are errors. Render the form again with sanitized values and error messages.
       res.render("genre_form", {
         title: "Update Genre",
-        genre: genre,
+        genre,
         errors: errors.array(),
       });
       return;
-    } else {
-      // Data from form is valid. Update the record.
-      await Genre.findByIdAndUpdate(req.params.id, genre);
-      res.redirect(genre.url);
     }
+
+    // Data from form is valid. Update the record.
+    await Genre.findByIdAndUpdate(req.params.id, genre);
+    res.redirect(genre.url);
   }),
 ];

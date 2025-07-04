@@ -83,11 +83,11 @@ exports.bookinstance_create_post = [
         bookinstance: bookInstance,
       });
       return;
-    } else {
-      // Data from form is valid
-      await bookInstance.save();
-      res.redirect(bookInstance.url);
     }
+
+    // Data from form is valid
+    await bookInstance.save();
+    res.redirect(bookInstance.url);
   }),
 ];
 
@@ -180,11 +180,11 @@ exports.bookinstance_update_post = [
         bookinstance: bookInstance,
       });
       return;
-    } else {
-      // Data from form is valid.
-      await BookInstance.findByIdAndUpdate(req.params.id, bookInstance, {});
-      // Redirect to detail page.
-      res.redirect(bookInstance.url);
     }
+
+    // Data from form is valid.
+    await BookInstance.findByIdAndUpdate(req.params.id, bookInstance, {});
+    // Redirect to detail page.
+    res.redirect(bookInstance.url);
   }),
 ];
