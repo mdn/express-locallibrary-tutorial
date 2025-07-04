@@ -59,7 +59,7 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
 
   res.render("book_detail", {
     title: book.title,
-    book: book,
+    book,
     book_instances: bookInstances,
   });
 });
@@ -139,7 +139,7 @@ exports.book_create_post = [
         title: "Create Book",
         authors: allAuthors,
         genres: allGenres,
-        book: book,
+        book,
         errors: errors.array(),
       });
     } else {
@@ -164,7 +164,7 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("book_delete", {
     title: "Delete Book",
-    book: book,
+    book,
     book_instances: bookInstances,
   });
 });
@@ -187,7 +187,7 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
     // Book has book_instances. Render in same way as for GET route.
     res.render("book_delete", {
       title: "Delete Book",
-      book: book,
+      book,
       book_instances: bookInstances,
     });
     return;
@@ -223,7 +223,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
     title: "Update Book",
     authors: allAuthors,
     genres: allGenres,
-    book: book,
+    book,
   });
 });
 
@@ -288,7 +288,7 @@ exports.book_update_post = [
         title: "Update Book",
         authors: allAuthors,
         genres: allGenres,
-        book: book,
+        book,
         errors: errors.array(),
       });
       return;

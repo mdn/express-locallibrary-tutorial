@@ -29,7 +29,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
 
   res.render("genre_detail", {
     title: "Genre Detail",
-    genre: genre,
+    genre,
     genre_books: booksInGenre,
   });
 });
@@ -59,7 +59,7 @@ exports.genre_create_post = [
       // There are errors. Render the form again with sanitized values/error messages.
       res.render("genre_form", {
         title: "Create Genre",
-        genre: genre,
+        genre,
         errors: errors.array(),
       });
       return;
@@ -95,7 +95,7 @@ exports.genre_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("genre_delete", {
     title: "Delete Genre",
-    genre: genre,
+    genre,
     genre_books: booksInGenre,
   });
 });
@@ -112,7 +112,7 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
     // Genre has books. Render in same way as for GET route.
     res.render("genre_delete", {
       title: "Delete Genre",
-      genre: genre,
+      genre,
       genre_books: booksInGenre,
     });
     return;
@@ -134,7 +134,7 @@ exports.genre_update_get = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  res.render("genre_form", { title: "Update Genre", genre: genre });
+  res.render("genre_form", { title: "Update Genre", genre });
 });
 
 // Handle Genre update on POST.
@@ -160,7 +160,7 @@ exports.genre_update_post = [
       // There are errors. Render the form again with sanitized values and error messages.
       res.render("genre_form", {
         title: "Update Genre",
-        genre: genre,
+        genre,
         errors: errors.array(),
       });
       return;
