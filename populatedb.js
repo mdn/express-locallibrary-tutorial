@@ -60,10 +60,10 @@ async function authorCreate(index, first_name, family_name, d_birth, d_death) {
 
 async function bookCreate(index, title, summary, isbn, author, genre) {
   const bookdetail = {
-    title: title,
-    summary: summary,
-    author: author,
-    isbn: isbn,
+    title,
+    summary,
+    author,
+    isbn,
   };
   if (genre != false) bookdetail.genre = genre;
 
@@ -75,8 +75,8 @@ async function bookCreate(index, title, summary, isbn, author, genre) {
 
 async function bookInstanceCreate(index, book, imprint, due_back, status) {
   const bookinstancedetail = {
-    book: book,
-    imprint: imprint,
+    book,
+    imprint,
   };
   if (due_back != false) bookinstancedetail.due_back = due_back;
   if (status != false) bookinstancedetail.status = status;
