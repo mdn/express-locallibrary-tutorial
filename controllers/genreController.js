@@ -73,11 +73,12 @@ exports.genre_create_post = [
     if (genreExists) {
       // Genre exists, redirect to its detail page.
       res.redirect(genreExists.url);
-    } else {
-      await genre.save();
-      // New genre saved. Redirect to genre detail page.
-      res.redirect(genre.url);
+      return;
     }
+
+    // New genre. Save and redirect to its detail page.
+    await genre.save();
+    res.redirect(genre.url);
   }),
 ];
 

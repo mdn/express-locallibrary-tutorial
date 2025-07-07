@@ -142,11 +142,12 @@ exports.book_create_post = [
         book,
         errors: errors.array(),
       });
-    } else {
-      // Data from form is valid. Save book.
-      await book.save();
-      res.redirect(book.url);
+      return;
     }
+
+    // Data from form is valid. Save book.
+    await book.save();
+    res.redirect(book.url);
   }),
 ];
 
