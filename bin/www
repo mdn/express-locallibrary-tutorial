@@ -4,11 +4,9 @@
  * Module dependencies.
  */
 
+var app = require("../app");
 var debug = require("debug")("express-locallibrary-tutorial:server");
 var http = require("http");
-
-const { createApp } = require("../app");
-const app = createApp();
 
 /**
  * Get port from environment and store in Express.

@@ -3,9 +3,8 @@
 const request = require("supertest"); // For testing HTTP endpoints
 const { expect } = require("chai"); // For assertions (use 'expect' style)
 
-// Import the Express app and create it.
-const { createApp } = require("../../app");
-const app = createApp();
+// Import the Express app
+const app = require("../../app");
 
 describe("Index Routes", () => {
   // Block for the test suite for the root route '/'

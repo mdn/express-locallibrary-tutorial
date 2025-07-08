@@ -3,9 +3,8 @@
 const request = require("supertest"); // For testing HTTP endpoints
 const { expect } = require("chai"); // For assertions (use 'expect' style)
 
-// Import the Express app and create it.
-const { createApp } = require("../../app");
-const app = createApp();
+// Import the Express app
+const app = require("../../app");
 
 // Set up test database
 const testDB = require("../utils/test_db");
@@ -34,9 +33,12 @@ describe("Author Routes", () => {
   describe("Author List Routes", () => {
     describe("GET /catalog/authors", () => {
       it("should return 200 and contain 'Author List' or similar text", async () => {
+        console.log("OK at this point?");
         const res = await request(app).get("/catalog/authors").expect(200);
+        console.log("2OK at this point?");
         // Adjust this check to your actual HTML output
         expect(res.text.toLowerCase()).to.include("author list");
+        console.log("3OK at this point?");
       });
     });
   });
@@ -126,7 +128,6 @@ describe("Author Routes", () => {
     });
   });
 
-  // Start of Author Create Route
   describe("Author Create Routes", () => {
     it("should load the author create form", async () => {
       const res = await request(app).get("/catalog/author/create").expect(200);
@@ -175,8 +176,6 @@ describe("Author Routes", () => {
       // We could also test on: Family name has non-alphanumeric characters.
     });
   });
-
-  // Author Update Routes
 
   describe("Author Update Routes", () => {
     let author;
