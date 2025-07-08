@@ -4,9 +4,8 @@ const Genre = require("../models/genre");
 const BookInstance = require("../models/bookinstance");
 
 const { body, validationResult } = require("express-validator");
-const asyncHandler = require("express-async-handler");
 
-exports.index = asyncHandler(async (req, res, next) => {
+exports.index = async (req, res, next) => {
   // Get details of books, book instances, authors and genre counts (in parallel)
   const [
     numBooks,
@@ -30,20 +29,20 @@ exports.index = asyncHandler(async (req, res, next) => {
     author_count: numAuthors,
     genre_count: numGenres,
   });
-});
+};
 
 // Display list of all books.
-exports.book_list = asyncHandler(async (req, res, next) => {
+exports.book_list = async (req, res, next) => {
   const allBooks = await Book.find({}, "title author")
     .sort({ title: 1 })
     .populate("author")
     .exec();
 
   res.render("book_list", { title: "Book List", book_list: allBooks });
-});
+};
 
 // Display detail page for a specific book.
-exports.book_detail = asyncHandler(async (req, res, next) => {
+exports.book_detail = async (req, res, next) => {
   // Get details of books, book instances for specific book
   const [book, bookInstances] = await Promise.all([
     Book.findById(req.params.id).populate("author").populate("genre").exec(),
@@ -62,10 +61,10 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
     book,
     book_instances: bookInstances,
   });
-});
+};
 
 // Display book create form on GET.
-exports.book_create_get = asyncHandler(async (req, res, next) => {
+exports.book_create_get = async (req, res, next) => {
   // Get all authors and genres, which we can use for adding to our book.
   const [allAuthors, allGenres] = await Promise.all([
     Author.find().sort({ family_name: 1 }).exec(),
@@ -77,7 +76,7 @@ exports.book_create_get = asyncHandler(async (req, res, next) => {
     authors: allAuthors,
     genres: allGenres,
   });
-});
+};
 
 // Handle book create on POST.
 exports.book_create_post = [
@@ -107,7 +106,7 @@ exports.book_create_post = [
   body("genre.*").escape(),
   // Process request after validation and sanitization.
 
-  asyncHandler(async (req, res, next) => {
+  async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
@@ -148,11 +147,11 @@ exports.book_create_post = [
     // Data from form is valid. Save book.
     await book.save();
     res.redirect(book.url);
-  }),
+  },
 ];
 
 // Display book delete form on GET.
-exports.book_delete_get = asyncHandler(async (req, res, next) => {
+exports.book_delete_get = async (req, res, next) => {
   const [book, bookInstances] = await Promise.all([
     Book.findById(req.params.id).populate("author").populate("genre").exec(),
     BookInstance.find({ book: req.params.id }).exec(),
@@ -168,10 +167,10 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
     book,
     book_instances: bookInstances,
   });
-});
+};
 
 // Handle book delete on POST.
-exports.book_delete_post = asyncHandler(async (req, res, next) => {
+exports.book_delete_post = async (req, res, next) => {
   // Assume the post has valid id (ie no validation/sanitization).
 
   const [book, bookInstances] = await Promise.all([
@@ -197,10 +196,10 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
   // Book has no BookInstance objects. Delete object and redirect to the list of books.
   await Book.findByIdAndDelete(req.body.id);
   res.redirect("/catalog/books");
-});
+};
 
 // Display book update form on GET.
-exports.book_update_get = asyncHandler(async (req, res, next) => {
+exports.book_update_get = async (req, res, next) => {
   // Get book, authors and genres for form.
   const [book, allAuthors, allGenres] = await Promise.all([
     Book.findById(req.params.id).populate("author").exec(),
@@ -226,7 +225,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
     genres: allGenres,
     book,
   });
-});
+};
 
 // Handle book update on POST.
 exports.book_update_post = [
@@ -256,7 +255,7 @@ exports.book_update_post = [
   body("genre.*").escape(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
@@ -299,5 +298,5 @@ exports.book_update_post = [
     const thebook = await Book.findByIdAndUpdate(req.params.id, book, {});
     // Redirect to book detail page.
     res.redirect(thebook.url);
-  }),
+  },
 ];
