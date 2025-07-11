@@ -1,6 +1,7 @@
-// test/utils/test-db.js
-const mongoose = require("mongoose");
-const { MongoMemoryServer } = require("mongodb-memory-server");
+// test/utils/test-db.mjs
+
+import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 let mongoServer;
 
@@ -24,4 +25,4 @@ async function clearDatabase() {
   }
 }
 
-module.exports = { connect, close, clearDatabase };
+export default { connect, close, clearDatabase }; // Default export

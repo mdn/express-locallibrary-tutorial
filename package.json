@@ -2,14 +2,14 @@
   "name": "express-locallibrary-tutorial",
   "version": "0.0.1",
   "engines": {
-    "node": ">=v16.15.0"
+    "node": ">=22.0.0"
   },
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart",
-    "test": "mocha test/**/*.test.js"
+    "test": "node --test"
   },
   "dependencies": {
     "compression": "^1.8.0",
@@ -26,8 +26,6 @@
     "pug": "^3.0.3"
   },
   "devDependencies": {
-    "chai": "^5.2.0",
-    "mocha": "^11.7.1",
     "mongodb-memory-server": "^10.1.4",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.1"
