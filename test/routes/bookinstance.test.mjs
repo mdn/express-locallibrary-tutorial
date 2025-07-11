@@ -10,7 +10,7 @@ import app from "../../app.js";
 // Set up test database
 import testDB from "../utils/test_db.mjs";
 
-// Import models (assuming they are CommonJS modules)
+// Import models used in tests
 import Genre from "../../models/genre.js";
 import Author from "../../models/author.js";
 import Book from "../../models/book.js";
