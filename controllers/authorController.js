@@ -2,19 +2,18 @@ const Author = require("../models/author");
 const Book = require("../models/book");
 
 const { body, validationResult } = require("express-validator");
-const asyncHandler = require("express-async-handler");
 
 // Display list of all Authors.
-exports.author_list = asyncHandler(async (req, res, next) => {
+exports.author_list = async (req, res, next) => {
   const allAuthors = await Author.find().sort({ family_name: 1 }).exec();
   res.render("author_list", {
     title: "Author List",
     author_list: allAuthors,
   });
-});
+};
 
 // Display detail page for a specific Author.
-exports.author_detail = asyncHandler(async (req, res, next) => {
+exports.author_detail = async (req, res, next) => {
   // Get details of author and all their books (in parallel)
   const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
@@ -33,7 +32,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
     author,
     author_books: allBooksByAuthor,
   });
-});
+};
 
 // Display Author create form on GET.
 exports.author_create_get = (req, res, next) => {
@@ -67,7 +66,7 @@ exports.author_create_post = [
     .toDate(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
@@ -93,11 +92,11 @@ exports.author_create_post = [
     await author.save();
     // Redirect to new author record.
     res.redirect(author.url);
-  }),
+  },
 ];
 
 // Display Author delete form on GET.
-exports.author_delete_get = asyncHandler(async (req, res, next) => {
+exports.author_delete_get = async (req, res, next) => {
   // Get details of author and all their books (in parallel)
   const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
@@ -114,10 +113,10 @@ exports.author_delete_get = asyncHandler(async (req, res, next) => {
     author,
     author_books: allBooksByAuthor,
   });
-});
+};
 
 // Handle Author delete on POST.
-exports.author_delete_post = asyncHandler(async (req, res, next) => {
+exports.author_delete_post = async (req, res, next) => {
   // Get details of author and all their books (in parallel)
   const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
@@ -137,10 +136,10 @@ exports.author_delete_post = asyncHandler(async (req, res, next) => {
   // Author has no books. Delete object and redirect to the list of authors.
   await Author.findByIdAndDelete(req.body.authorid);
   res.redirect("/catalog/authors");
-});
+};
 
 // Display Author update form on GET.
-exports.author_update_get = asyncHandler(async (req, res, next) => {
+exports.author_update_get = async (req, res, next) => {
   const author = await Author.findById(req.params.id).exec();
   if (author === null) {
     // No results.
@@ -150,7 +149,7 @@ exports.author_update_get = asyncHandler(async (req, res, next) => {
   }
 
   res.render("author_form", { title: "Update Author", author });
-});
+};
 
 // Handle Author update on POST.
 exports.author_update_post = [
@@ -179,7 +178,7 @@ exports.author_update_post = [
     .toDate(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
@@ -205,5 +204,5 @@ exports.author_update_post = [
     // Data from form is valid. Update the record.
     await Author.findByIdAndUpdate(req.params.id, author);
     res.redirect(author.url);
-  }),
+  },
 ];
