@@ -89,8 +89,8 @@ exports.author_create_post = [
     }
 
     // Data from form is valid.
+    // Save and redirect to new author record.
     await author.save();
-    // Redirect to new author record.
     res.redirect(author.url);
   },
 ];
@@ -106,6 +106,7 @@ exports.author_delete_get = async (req, res, next) => {
   if (author === null) {
     // No results.
     res.redirect("/catalog/authors");
+    return;
   }
 
   res.render("author_delete", {
