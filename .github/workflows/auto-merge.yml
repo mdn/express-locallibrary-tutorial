@@ -3,6 +3,10 @@ name: auto-merge
 on:
   pull_request_target:
 
+permissions:
+  # Label pull requests.
+  pull-requests: write
+
 jobs:
   auto-merge:
     uses: mdn/workflows/.github/workflows/auto-merge.yml@main
