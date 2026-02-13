@@ -98,7 +98,7 @@ test("Genre Routes", async (t) => {
       "should delete the genre and redirect to genre list",
       async () => {
         const res = await request(app)
-          .post(`/catalog/genre/${genre._id}/delete`)
+          .delete(`/catalog/genre/${genre._id}/delete`)
           .type("form")
           .send({ id: genre._id.toString() })
           .expect(302);
@@ -134,7 +134,7 @@ test("Genre Routes", async (t) => {
       });
 
       const res = await request(app)
-        .post(`/catalog/genre/${genre._id}/delete`)
+        .delete(`/catalog/genre/${genre._id}/delete`)
         .type("form")
         .send({ id: genre._id.toString() })
         .expect(200); // Should NOT redirect, but render page with error

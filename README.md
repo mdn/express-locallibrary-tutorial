@@ -22,15 +22,31 @@ To get this project up and running locally on your computer:
    ```bash
    npm install
    ```
+
 3. Run the tutorial server, using the appropriate command line shell for your environment:
 
    ```bash
    # Linux terminal
    DEBUG=express-locallibrary-tutorial:* npm run devstart
-   
+
    # Windows Powershell
    $ENV:DEBUG = "express-locallibrary-tutorial:*"; npm start
    ```
+
 4. Open a browser to <http://localhost:3000/> to open the library site.
 
-> **Note:** The library uses a default MongoDB database hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). You should use a different database for your own code experiments.
+> [!NOTE]
+> The library uses a default MongoDB database hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+> You should use a different database for your own code experiments.
+
+## Contributing
+
+The project is the result of carefully running through all the steps in the [tutorial on MDN](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website).
+Any changes to either MDN or this project must be synchronized.
+Generally it is better to implement changes here before submitting them to MDN.
+
+Before submitting a PR, make sure that the tests pass:
+
+```bash
+npm test
+```

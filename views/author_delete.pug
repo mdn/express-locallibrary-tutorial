@@ -19,7 +19,7 @@ block content
   else
     p Do you really want to delete this Author?
 
-    form(method='POST')
+    form(method='POST' action='?_method=DELETE')
       div.form-group
         input#authorid.form-control(type='hidden', name='authorid', value=author._id )
 

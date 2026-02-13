@@ -21,6 +21,7 @@
     "helmet": "^8.1.0",
     "http-errors": "^2.0.0",
     "luxon": "^3.6.1",
+    "method-override": "^3.0.0",
     "mongoose": "^8.16.2",
     "morgan": "^1.10.0",
     "pug": "^3.0.3"

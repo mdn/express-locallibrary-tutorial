@@ -115,7 +115,7 @@ test("Author Routes", async (t) => {
       "should delete the author and redirect to author list",
       async () => {
         const res = await request(app)
-          .post(`/catalog/author/${author._id}/delete`)
+          .delete(`/catalog/author/${author._id}/delete`)
           .type("form")
           .send({ authorid: author._id.toString() }) // Form body
           .expect(302);
@@ -147,7 +147,7 @@ test("Author Routes", async (t) => {
       });
 
       const res = await request(app)
-        .post(`/catalog/author/${author._id}/delete`)
+        .delete(`/catalog/author/${author._id}/delete`)
         .type("form")
         .send({ id: author._id.toString() }) // Note: Was `id`, but controller likely expects `authorid` for consistency
         .expect(200); // Should NOT redirect

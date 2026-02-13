@@ -26,7 +26,7 @@ block content
     if bookinstance.status!='Available'
       p #[strong Due back:] #{bookinstance.due_back_formatted}
 
-  form(method='POST')
+  form(method='POST' action='?_method=DELETE')
     div.form-group
       input#id.form-control(type='hidden',name='id', value=bookinstance._id )
 

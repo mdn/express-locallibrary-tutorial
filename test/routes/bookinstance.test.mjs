@@ -157,7 +157,7 @@ test("BookInstance Routes", async (t) => {
       "should delete the BookInstance and redirect to BookInstance list",
       async () => {
         const res = await request(app)
-          .post(`/catalog/bookinstance/${bookInstance._id}/delete`)
+          .delete(`/catalog/bookinstance/${bookInstance._id}/delete`)
           .type("form")
           .send({ id: bookInstance._id.toString() })
           .expect(302);

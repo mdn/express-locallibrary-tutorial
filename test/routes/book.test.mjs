@@ -134,7 +134,7 @@ test("Book Routes", async (t) => {
       "should delete the book and redirect to book list",
       async () => {
         const res = await request(app)
-          .post(`/catalog/book/${book._id}/delete`)
+          .delete(`/catalog/book/${book._id}/delete`)
           .type("form") // Simulates form POST
           .send({ id: book._id.toString() }) // This is where server gets the ID
           .expect(302);
@@ -166,7 +166,7 @@ test("Book Routes", async (t) => {
         });
 
         const res = await request(app)
-          .post(`/catalog/book/${book._id}/delete`)
+          .delete(`/catalog/book/${book._id}/delete`)
           .type("form")
           .send({ id: book._id.toString() })
           .expect(200);

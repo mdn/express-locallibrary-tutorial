@@ -41,7 +41,7 @@ block content
   else
     p Do you really want to delete this Book?
 
-    form(method='POST')
+    form(method='POST' action='?_method=DELETE')
       div.form-group
         input#id.form-control(type='hidden',name='id', value=book._id )
 
