@@ -19,7 +19,6 @@ app.set("port", port);
  * Set up mongoose connection
  */
 const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
 const dev_db_url =
   "mongodb+srv://cooluser:coolpassword@cluster0.cojoign.mongodb.net/local_library?retryWrites=true&w=majority&appName=Cluster0";
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
@@ -33,6 +32,15 @@ try {
 
 async function connectMongoose() {
   await mongoose.connect(mongoDB);
+  
+  // Add connection error handlers
+  mongoose.connection.on('error', err => {
+    console.error('MongoDB connection error:', err);
+  });
+  
+  mongoose.connection.on('disconnected', () => {
+    console.warn('MongoDB disconnected');
+  });
 }
 
 /**

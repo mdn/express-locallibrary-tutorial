@@ -8,7 +8,6 @@ let mongoServer;
 async function connect() {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
-  mongoose.set("strictQuery", false);
   await mongoose.connect(uri);
 }
 
