@@ -1,5 +1,5 @@
-# Mostly maintained by Hamish and Brian (as of Nov '23)
-* @bsmth @hamishwillee
+# Maintained by Content team and Contractors (as of Feb '26)
+* @mdn/content-team @mdn/contractors
 
 /.github/workflows/ @mdn/engineering
 /.github/CODEOWNERS @mdn/content-team @mdn/engineering
