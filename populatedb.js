@@ -103,6 +103,7 @@ async function createAuthors() {
     authorCreate(2, "Isaac", "Asimov", "1920-01-02", "1992-04-06"),
     authorCreate(3, "Bob", "Billings", false, false),
     authorCreate(4, "Jim", "Jones", "1971-12-16", false),
+    authorCreate(5, "Evelyn Beatriz", "Teixeira", "2008-11-10", false),
   ]);
 }
 
@@ -165,6 +166,14 @@ async function createBooks() {
       authors[4],
       false
     ),
+    bookCreate(
+      7,
+      "Yellowjackets",
+      "Sumário de Yelllowjackets",
+      "ISBN333333",
+      authors[5],
+      false
+    )
   ]);
 }
 
