@@ -98,7 +98,7 @@ async function createGenres() {
 async function createAuthors() {
   console.log("Adding authors");
   await Promise.all([
-    authorCreate(0, "Patrick", "Rothfuss", "1973-06-06", false),
+    authorCreate(0, "kim ju song", "Rothfuss", "1973-06-06", false),
     authorCreate(1, "Ben", "Bova", "1932-11-8", false),
     authorCreate(2, "Isaac", "Asimov", "1920-01-02", "1992-04-06"),
     authorCreate(3, "Bob", "Billings", false, false),
