@@ -11,12 +11,13 @@ const catalogRouter = require("./routes/catalog"); // Import routes for "catalog
 
 const compression = require("compression");
 const helmet = require("helmet");
+const requestLogger = require("./middleware/requestLogger");
 
 const app = express();
 
-// Set up rate limiter: maximum of twenty requests per minute
+// Set up rate limiter: maximum of sixty requests per minute
 const limiter = RateLimit({
-  windowMs: 1 * 60 * 1000, // 10 seconds
+  windowMs: 1 * 60 * 1000, // 60 seconds
   max: 60,
 });
 // Apply rate limiter to all requests
@@ -27,10 +28,12 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 app.use(logger("dev"));
+app.use(requestLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(helmet());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
