@@ -23,39 +23,40 @@ const dev_db_url =
   "mongodb+srv://cooluser:coolpassword@cluster0.cojoign.mongodb.net/local_library?retryWrites=true&w=majority&appName=Cluster0";
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
-try {
-  connectMongoose();
-} catch (err) {
-  console.error("Failed to connect to MongoDB:", err);
-  process.exit(1);
-}
+connectMongoose()
+  .then(startServer)
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB:", err);
+    process.exit(1);
+  });
 
 async function connectMongoose() {
   await mongoose.connect(mongoDB);
-  
+
   // Add connection error handlers
-  mongoose.connection.on('error', err => {
-    console.error('MongoDB connection error:', err);
+  mongoose.connection.on("error", (err) => {
+    console.error("MongoDB connection error:", err);
   });
-  
-  mongoose.connection.on('disconnected', () => {
-    console.warn('MongoDB disconnected');
+
+  mongoose.connection.on("disconnected", () => {
+    console.warn("MongoDB disconnected");
   });
 }
 
 /**
- * Create HTTP server.
+ * Create HTTP server and listen on provided port, on all network
+ * interfaces, once the MongoDB connection is established.
  */
 
-var server = http.createServer(app);
+var server;
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+function startServer() {
+  server = http.createServer(app);
 
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+  server.listen(port);
+  server.on("error", onError);
+  server.on("listening", onListening);
+}
 
 /**
  * Event listener for HTTP server "error" event.
