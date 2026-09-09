@@ -34,7 +34,7 @@ block content
           p.text-warning #{book_copy.status}
         p #[strong Imprint:] #{book_copy.imprint}
         if book_copy.status!='Available'
-          p #[strong Due back:] #{book_copy.due_back}
+          p #[strong Due back:] #{book_copy.due_back_formatted}
         p #[strong Id:]
           a(href=book_copy.url) #{book_copy._id}
 

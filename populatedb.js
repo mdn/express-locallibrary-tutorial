@@ -1,37 +1,38 @@
-#! /usr/bin/env node
+import createDebug from "debug";
+import mongoose from "mongoose";
 
-console.log(
+import Book from "./models/book.js";
+import Author from "./models/author.js";
+import Genre from "./models/genre.js";
+import BookInstance from "./models/bookinstance.js";
+
+const debug = createDebug("express-locallibrary-tutorial:populatedb");
+
+debug(
   'This script populates some test books, authors, genres and bookinstances to your database. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.cojoign.mongodb.net/local_library?retryWrites=true&w=majority&appName=Cluster0"'
 );
 
 // Get arguments passed on command line
 const userArgs = process.argv.slice(2);
 
-const Book = require("./models/book");
-const Author = require("./models/author");
-const Genre = require("./models/genre");
-const BookInstance = require("./models/bookinstance");
-
 const genres = [];
 const authors = [];
 const books = [];
 const bookinstances = [];
 
-const mongoose = require("mongoose");
-
 const mongoDB = userArgs[0];
 
-main().catch((err) => console.log(err));
+main().catch((err) => debug(err));
 
 async function main() {
-  console.log("Debug: About to connect");
+  debug("Debug: About to connect");
   await mongoose.connect(mongoDB);
-  console.log("Debug: Should be connected?");
+  debug("Debug: Should be connected?");
   await createGenres();
   await createAuthors();
   await createBooks();
   await createBookInstances();
-  console.log("Debug: Closing mongoose");
+  debug("Debug: Closing mongoose");
   await mongoose.connection.close();
 }
 
@@ -42,7 +43,7 @@ async function genreCreate(index, name) {
   const genre = new Genre({ name: name });
   await genre.save();
   genres[index] = genre;
-  console.log(`Added genre: ${name}`);
+  debug(`Added genre: ${name}`);
 }
 
 async function authorCreate(index, first_name, family_name, d_birth, d_death) {
@@ -54,7 +55,7 @@ async function authorCreate(index, first_name, family_name, d_birth, d_death) {
 
   await author.save();
   authors[index] = author;
-  console.log(`Added author: ${first_name} ${family_name}`);
+  debug(`Added author: ${first_name} ${family_name}`);
 }
 
 async function bookCreate(index, title, summary, isbn, author, genre) {
@@ -69,7 +70,7 @@ async function bookCreate(index, title, summary, isbn, author, genre) {
   const book = new Book(bookdetail);
   await book.save();
   books[index] = book;
-  console.log(`Added book: ${title}`);
+  debug(`Added book: ${title}`);
 }
 
 async function bookInstanceCreate(index, book, imprint, due_back, status) {
@@ -83,11 +84,11 @@ async function bookInstanceCreate(index, book, imprint, due_back, status) {
   const bookinstance = new BookInstance(bookinstancedetail);
   await bookinstance.save();
   bookinstances[index] = bookinstance;
-  console.log(`Added bookinstance: ${imprint}`);
+  debug(`Added bookinstance: ${imprint}`);
 }
 
 async function createGenres() {
-  console.log("Adding genres");
+  debug("Adding genres");
   await Promise.all([
     genreCreate(0, "Fantasy"),
     genreCreate(1, "Science Fiction"),
@@ -96,7 +97,7 @@ async function createGenres() {
 }
 
 async function createAuthors() {
-  console.log("Adding authors");
+  debug("Adding authors");
   await Promise.all([
     authorCreate(0, "Patrick", "Rothfuss", "1973-06-06", false),
     authorCreate(1, "Ben", "Bova", "1932-11-8", false),
@@ -107,7 +108,7 @@ async function createAuthors() {
 }
 
 async function createBooks() {
-  console.log("Adding Books");
+  debug("Adding Books");
   await Promise.all([
     bookCreate(
       0,
@@ -169,7 +170,7 @@ async function createBooks() {
 }
 
 async function createBookInstances() {
-  console.log("Adding authors");
+  debug("Adding authors");
   await Promise.all([
     bookInstanceCreate(
       0,

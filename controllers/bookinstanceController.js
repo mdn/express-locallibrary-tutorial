@@ -1,10 +1,10 @@
-const BookInstance = require("../models/bookinstance");
-const Book = require("../models/book");
+import { body, validationResult } from "express-validator";
 
-const { body, validationResult } = require("express-validator");
+import BookInstance from "../models/bookinstance.js";
+import Book from "../models/book.js";
 
 // Display list of all BookInstances.
-exports.bookinstance_list = async (req, res, next) => {
+export const bookInstanceList = async (req, res, next) => {
   const allBookInstances = await BookInstance.find().populate("book").exec();
 
   res.render("bookinstance_list", {
@@ -14,7 +14,7 @@ exports.bookinstance_list = async (req, res, next) => {
 };
 
 // Display detail page for a specific BookInstance.
-exports.bookinstance_detail = async (req, res, next) => {
+export const bookInstanceDetail = async (req, res, next) => {
   const bookInstance = await BookInstance.findById(req.params.id)
     .populate("book")
     .exec();
@@ -33,7 +33,7 @@ exports.bookinstance_detail = async (req, res, next) => {
 };
 
 // Display BookInstance create form on GET.
-exports.bookinstance_create_get = async (req, res, next) => {
+export const bookInstanceCreateGet = async (req, res, next) => {
   const allBooks = await Book.find({}, "title").sort({ title: 1 }).exec();
 
   res.render("bookinstance_form", {
@@ -43,7 +43,7 @@ exports.bookinstance_create_get = async (req, res, next) => {
 };
 
 // Handle BookInstance create on POST.
-exports.bookinstance_create_post = [
+export const bookInstanceCreatePost = [
   // Validate and sanitize fields.
   body("book", "Book must be specified").trim().isLength({ min: 1 }).escape(),
   body("imprint", "Imprint must be specified")
@@ -91,7 +91,7 @@ exports.bookinstance_create_post = [
 ];
 
 // Display BookInstance delete form on GET.
-exports.bookinstance_delete_get = async (req, res, next) => {
+export const bookInstanceDeleteGet = async (req, res, next) => {
   const bookInstance = await BookInstance.findById(req.params.id)
     .populate("book")
     .exec();
@@ -99,6 +99,7 @@ exports.bookinstance_delete_get = async (req, res, next) => {
   if (bookInstance === null) {
     // No results.
     res.redirect("/catalog/bookinstances");
+    return;
   }
 
   res.render("bookinstance_delete", {
@@ -108,14 +109,14 @@ exports.bookinstance_delete_get = async (req, res, next) => {
 };
 
 // Handle BookInstance delete on POST.
-exports.bookinstance_delete_post = async (req, res, next) => {
+export const bookInstanceDeletePost = async (req, res, next) => {
   // Assume valid BookInstance id in field.
-  await BookInstance.findByIdAndDelete(req.body.id);
+  await BookInstance.findByIdAndDelete(req.params.id);
   res.redirect("/catalog/bookinstances");
 };
 
 // Display BookInstance update form on GET.
-exports.bookinstance_update_get = async (req, res, next) => {
+export const bookInstanceUpdateGet = async (req, res, next) => {
   // Get book, all books for form (in parallel)
   const [bookInstance, allBooks] = await Promise.all([
     BookInstance.findById(req.params.id).populate("book").exec(),
@@ -137,8 +138,8 @@ exports.bookinstance_update_get = async (req, res, next) => {
   });
 };
 
-// Handle BookInstance update on POST.
-exports.bookinstance_update_post = [
+// Handle bookinstance update on POST.
+export const bookInstanceUpdatePost = [
   // Validate and sanitize fields.
   body("book", "Book must be specified").trim().isLength({ min: 1 }).escape(),
   body("imprint", "Imprint must be specified")

@@ -1,33 +1,29 @@
 {
   "name": "express-locallibrary-tutorial",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.0.0"
-  },
-  "private": true,
+  "version": "1.0.0",
   "scripts": {
-    "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www",
-    "serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart",
-    "test": "node --test"
+    "start": "node server.js",
+    "devstart": "node --watch server.js"
+  },
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24.0.0"
   },
   "dependencies": {
-    "compression": "^1.8.0",
-    "cookie-parser": "^1.4.7",
-    "debug": "^4.4.1",
-    "express": "^5.1.0",
-    "express-rate-limit": "^7.5.1",
-    "express-validator": "^7.3.1",
-    "helmet": "^8.1.0",
-    "http-errors": "^2.0.0",
-    "luxon": "^3.6.1",
-    "mongoose": "^9.2.1",
-    "morgan": "^1.10.0",
-    "pug": "^3.0.3"
+    "compression": "^1.8.1",
+    "debug": "^4.4.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.3.0",
+    "http-errors": "^2.0.1",
+    "mongoose": "^9.9.5",
+    "morgan": "^1.12.0",
+    "pug": "^3.0.4"
   },
   "devDependencies": {
     "mongodb-memory-server": "^10.1.4",
-    "nodemon": "^3.1.10",
     "supertest": "^7.1.1"
   }
 }
