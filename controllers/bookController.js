@@ -1,11 +1,11 @@
-const Book = require("../models/book");
-const Author = require("../models/author");
-const Genre = require("../models/genre");
-const BookInstance = require("../models/bookinstance");
+import { body, validationResult } from "express-validator";
 
-const { body, validationResult } = require("express-validator");
+import Book from "../models/book.js";
+import Author from "../models/author.js";
+import Genre from "../models/genre.js";
+import BookInstance from "../models/bookinstance.js";
 
-exports.index = async (req, res, next) => {
+export const index = async (req, res, next) => {
   // Get details of books, book instances, authors and genre counts (in parallel)
   const [
     numBooks,
@@ -32,7 +32,7 @@ exports.index = async (req, res, next) => {
 };
 
 // Display list of all books.
-exports.book_list = async (req, res, next) => {
+export const bookList = async (req, res, next) => {
   const allBooks = await Book.find({}, "title author")
     .sort({ title: 1 })
     .populate("author")
@@ -42,7 +42,7 @@ exports.book_list = async (req, res, next) => {
 };
 
 // Display detail page for a specific book.
-exports.book_detail = async (req, res, next) => {
+export const bookDetail = async (req, res, next) => {
   // Get details of books, book instances for specific book
   const [book, bookInstances] = await Promise.all([
     Book.findById(req.params.id).populate("author").populate("genre").exec(),
@@ -64,7 +64,7 @@ exports.book_detail = async (req, res, next) => {
 };
 
 // Display book create form on GET.
-exports.book_create_get = async (req, res, next) => {
+export const bookCreateGet = async (req, res, next) => {
   // Get all authors and genres, which we can use for adding to our book.
   const [allAuthors, allGenres] = await Promise.all([
     Author.find().sort({ family_name: 1 }).exec(),
@@ -79,7 +79,7 @@ exports.book_create_get = async (req, res, next) => {
 };
 
 // Handle book create on POST.
-exports.book_create_post = [
+export const bookCreatePost = [
   // Convert the genre to an array.
   (req, res, next) => {
     if (!Array.isArray(req.body.genre)) {
@@ -130,7 +130,7 @@ exports.book_create_post = [
 
       // Mark our selected genres as checked.
       for (const genre of allGenres) {
-        if (book.genre.indexOf(genre._id) > -1) {
+        if (book.genre.includes(genre._id)) {
           genre.checked = "true";
         }
       }
@@ -151,7 +151,7 @@ exports.book_create_post = [
 ];
 
 // Display book delete form on GET.
-exports.book_delete_get = async (req, res, next) => {
+export const bookDeleteGet = async (req, res, next) => {
   const [book, bookInstances] = await Promise.all([
     Book.findById(req.params.id).populate("author").populate("genre").exec(),
     BookInstance.find({ book: req.params.id }).exec(),
@@ -160,6 +160,7 @@ exports.book_delete_get = async (req, res, next) => {
   if (book === null) {
     // No results.
     res.redirect("/catalog/books");
+    return;
   }
 
   res.render("book_delete", {
@@ -170,7 +171,7 @@ exports.book_delete_get = async (req, res, next) => {
 };
 
 // Handle book delete on POST.
-exports.book_delete_post = async (req, res, next) => {
+export const bookDeletePost = async (req, res, next) => {
   // Assume the post has valid id (ie no validation/sanitization).
 
   const [book, bookInstances] = await Promise.all([
@@ -181,6 +182,7 @@ exports.book_delete_post = async (req, res, next) => {
   if (book === null) {
     // No results.
     res.redirect("/catalog/books");
+    return;
   }
 
   if (bookInstances.length > 0) {
@@ -194,12 +196,12 @@ exports.book_delete_post = async (req, res, next) => {
   }
 
   // Book has no BookInstance objects. Delete object and redirect to the list of books.
-  await Book.findByIdAndDelete(req.body.id);
+  await Book.findByIdAndDelete(req.params.id);
   res.redirect("/catalog/books");
 };
 
 // Display book update form on GET.
-exports.book_update_get = async (req, res, next) => {
+export const bookUpdateGet = async (req, res, next) => {
   // Get book, authors and genres for form.
   const [book, allAuthors, allGenres] = await Promise.all([
     Book.findById(req.params.id).populate("author").exec(),
@@ -228,7 +230,7 @@ exports.book_update_get = async (req, res, next) => {
 };
 
 // Handle book update on POST.
-exports.book_update_post = [
+export const bookUpdatePost = [
   // Convert the genre to an array.
   (req, res, next) => {
     if (!Array.isArray(req.body.genre)) {
@@ -280,7 +282,7 @@ exports.book_update_post = [
 
       // Mark our selected genres as checked.
       for (const genre of allGenres) {
-        if (book.genre.includes(genre._id)) {
+        if (book.genre.indexOf(genre._id) > -1) {
           genre.checked = "true";
         }
       }
@@ -295,8 +297,8 @@ exports.book_update_post = [
     }
 
     // Data from form is valid. Update the record.
-    const thebook = await Book.findByIdAndUpdate(req.params.id, book, {});
+    const updatedBook = await Book.findByIdAndUpdate(req.params.id, book, {});
     // Redirect to book detail page.
-    res.redirect(thebook.url);
+    res.redirect(updatedBook.url);
   },
 ];

@@ -1,10 +1,9 @@
-const mongoose = require("mongoose");
-const { DateTime } = require("luxon"); //for date handling
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
 const BookInstanceSchema = new Schema({
-  book: { type: Schema.ObjectId, ref: "Book", required: true }, // Reference to the associated book.
+  book: { type: Schema.Types.ObjectId, ref: "Book", required: true }, // reference to the associated book
   imprint: { type: String, required: true },
   status: {
     type: String,
@@ -15,18 +14,25 @@ const BookInstanceSchema = new Schema({
   due_back: { type: Date, default: Date.now },
 });
 
-// Virtual for this bookinstance object's URL.
+// Virtual for bookinstance's URL
 BookInstanceSchema.virtual("url").get(function () {
-  return "/catalog/bookinstance/" + this._id;
+  // We don't use an arrow function as we'll need the this object
+  return `/catalog/bookinstance/${this._id}`;
+});
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
 });
 
 BookInstanceSchema.virtual("due_back_formatted").get(function () {
-  return DateTime.fromJSDate(this.due_back).toLocaleString(DateTime.DATE_MED);
+  return dateFormatter.format(this.due_back);
 });
 
 BookInstanceSchema.virtual("due_back_yyyy_mm_dd").get(function () {
-  return DateTime.fromJSDate(this.due_back).toISODate(); //format 'YYYY-MM-DD'
+  return this.due_back ? this.due_back.toISOString().slice(0, 10) : "";
 });
 
-// Export model.
-module.exports = mongoose.model("BookInstance", BookInstanceSchema);
+// Export model
+export default mongoose.model("BookInstance", BookInstanceSchema);
