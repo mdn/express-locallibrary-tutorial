@@ -29,5 +29,9 @@
     "mongodb-memory-server": "^10.1.4",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.1"
+  },
+  "allowScripts": {
+    "fsevents": false,
+    "mongodb-memory-server": true
   }
 }
