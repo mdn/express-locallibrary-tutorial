@@ -137,7 +137,7 @@ export const authorDeletePost = async (req, res, next) => {
     return;
   }
   // Author has no books. Delete object and redirect to the list of authors.
-  await Author.findByIdAndDelete(req.body.authorid);
+  await Author.findByIdAndDelete(req.params.id);
   res.redirect("/catalog/authors");
 };
 
