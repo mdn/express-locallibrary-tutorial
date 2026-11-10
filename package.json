@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node server.js",
-    "devstart": "node --watch server.js"
+    "devstart": "node --watch server.js",
+    "demo": "node demo.js",
+    "test": "node --test"
   },
   "type": "module",
   "private": true,
