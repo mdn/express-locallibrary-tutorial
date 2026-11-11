@@ -116,8 +116,6 @@ test("Author Routes", async (t) => {
       async () => {
         const res = await request(app)
           .post(`/catalog/author/${author._id}/delete`)
-          .type("form")
-          .send({ authorid: author._id.toString() }) // Form body
           .expect(302);
 
         assert.strictEqual(
@@ -148,8 +146,6 @@ test("Author Routes", async (t) => {
 
       const res = await request(app)
         .post(`/catalog/author/${author._id}/delete`)
-        .type("form")
-        .send({ id: author._id.toString() }) // Note: Was `id`, but controller likely expects `authorid` for consistency
         .expect(200); // Should NOT redirect
 
       const found = await Author.findById(author._id);
@@ -168,6 +164,33 @@ test("Author Routes", async (t) => {
         `Expected "Bound to Author", got: ${res.text}`
       );
     });
+
+    await t.test(
+      "should only delete the author in the URL, not an id in the form body",
+      async () => {
+        const genre = await Genre.create({ name: "Drama" });
+        await Book.create({
+          title: "Bound to Author",
+          author: author._id,
+          summary: "A book written by the author",
+          isbn: "1111111111",
+          genre: [genre._id],
+        });
+        const other = await Author.create({
+          first_name: "Other",
+          family_name: "Author",
+        });
+
+        await request(app)
+          .post(`/catalog/author/${author._id}/delete`)
+          .type("form")
+          .send({ authorid: other._id.toString() })
+          .expect(200); // URL author has books, so nothing is deleted
+
+        assert.notStrictEqual(await Author.findById(author._id), null);
+        assert.notStrictEqual(await Author.findById(other._id), null);
+      }
+    );
   });
 
   // Author Create Routes Suite

@@ -2,12 +2,11 @@ extends layout
 
 block content
   h1= title
-  
-  if list_genres.length
-    ul
-      each val in list_genres
-        li
-          a(href=val.url) #{val.name}
 
+  if genre_list.length
+    ul
+      each genre in genre_list
+        li
+          a(href=genre.url) #{genre.name}
   else
     p There are no genres.

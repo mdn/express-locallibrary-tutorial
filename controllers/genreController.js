@@ -1,19 +1,19 @@
-const Genre = require("../models/genre");
-const Book = require("../models/book");
+import { body, validationResult } from "express-validator";
 
-const { body, validationResult } = require("express-validator");
+import Genre from "../models/genre.js";
+import Book from "../models/book.js";
 
 // Display list of all Genre.
-exports.genre_list = async (req, res, next) => {
+export const genreList = async (req, res, next) => {
   const allGenres = await Genre.find().sort({ name: 1 }).exec();
   res.render("genre_list", {
     title: "Genre List",
-    list_genres: allGenres,
+    genre_list: allGenres,
   });
 };
 
 // Display detail page for a specific Genre.
-exports.genre_detail = async (req, res, next) => {
+export const genreDetail = async (req, res, next) => {
   // Get details of genre and all associated books (in parallel)
   const [genre, booksInGenre] = await Promise.all([
     Genre.findById(req.params.id).exec(),
@@ -34,12 +34,12 @@ exports.genre_detail = async (req, res, next) => {
 };
 
 // Display Genre create form on GET.
-exports.genre_create_get = (req, res, next) => {
+export const genreCreateGet = (req, res, next) => {
   res.render("genre_form", { title: "Create Genre" });
 };
 
 // Handle Genre create on POST.
-exports.genre_create_post = [
+export const genreCreatePost = [
   // Validate and sanitize the name field.
   body("name", "Genre name must contain at least 3 characters")
     .trim()
@@ -65,7 +65,7 @@ exports.genre_create_post = [
     }
 
     // Data from form is valid.
-    // Check if Genre with same name (case insensitive) already exists.
+    // Check if Genre with same name already exists.
     const genreExists = await Genre.findOne({ name: req.body.name })
       .collation({ locale: "en", strength: 2 })
       .exec();
@@ -82,7 +82,7 @@ exports.genre_create_post = [
 ];
 
 // Display Genre delete form on GET.
-exports.genre_delete_get = async (req, res, next) => {
+export const genreDeleteGet = async (req, res, next) => {
   // Get details of genre and all associated books (in parallel)
   const [genre, booksInGenre] = await Promise.all([
     Genre.findById(req.params.id).exec(),
@@ -91,6 +91,7 @@ exports.genre_delete_get = async (req, res, next) => {
   if (genre === null) {
     // No results.
     res.redirect("/catalog/genres");
+    return;
   }
 
   res.render("genre_delete", {
@@ -101,7 +102,7 @@ exports.genre_delete_get = async (req, res, next) => {
 };
 
 // Handle Genre delete on POST.
-exports.genre_delete_post = async (req, res, next) => {
+export const genreDeletePost = async (req, res, next) => {
   // Get details of genre and all associated books (in parallel)
   const [genre, booksInGenre] = await Promise.all([
     Genre.findById(req.params.id).exec(),
@@ -119,12 +120,12 @@ exports.genre_delete_post = async (req, res, next) => {
   }
 
   // Genre has no books. Delete object and redirect to the list of genres.
-  await Genre.findByIdAndDelete(req.body.id);
+  await Genre.findByIdAndDelete(req.params.id);
   res.redirect("/catalog/genres");
 };
 
 // Display Genre update form on GET.
-exports.genre_update_get = async (req, res, next) => {
+export const genreUpdateGet = async (req, res, next) => {
   const genre = await Genre.findById(req.params.id).exec();
 
   if (genre === null) {
@@ -138,7 +139,7 @@ exports.genre_update_get = async (req, res, next) => {
 };
 
 // Handle Genre update on POST.
-exports.genre_update_post = [
+export const genreUpdatePost = [
   // Validate and sanitize the name field.
   body("name", "Genre name must contain at least 3 characters")
     .trim()
